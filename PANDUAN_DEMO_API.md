@@ -484,7 +484,70 @@ Jika Pak Adam menyuruh Anda membuka kode program di laptop Anda, langsung tunjuk
 
 ---
 
-## ❓ BAGIAN 5: Bank Pertanyaan Ujian UAS & Cara Menjawabnya (Akademik Premium)
+## 🔗 BAGIAN 5: Alur Sambungan Fitur & Lokasi Kode (Bagaimana Frontend Memanggil Backend)
+
+Di bawah ini adalah penjelasan detail mengenai **bagaimana fitur utama di website menyambung ke API backend**, teknologi yang digunakan, serta **lokasi file dan baris kodenya** secara presisi:
+
+### 🏺 1. Fitur Katalog & Pencarian Produk
+*   **Pake Apa?** Fungsi JavaScript `fetch()` (menggunakan framework Alpine.js) dengan menyisipkan header `X-API-KEY`.
+*   **Bagaimana Alurnya?**
+    1.  **Frontend (Tampilan):** Pengguna masuk ke halaman katalog, atau mengetik kata kunci di kolom pencarian.
+        *   *Lokasi Kode:* [resources/views/pages/products.blade.php](file:///c:/xampp1/htdocs/craftive/resources/views/pages/products.blade.php) pada method `loadProducts()` (Baris 274 - 305). JavaScript memicu `fetch('/api/products?search=...')` dengan membawa header `'X-API-KEY': 'craftive-public-key-2026'`.
+    2.  **Backend Routing:** Rute menerima request ini dan meneruskannya ke filter keamanan.
+        *   *Lokasi Kode:* [routes/api.php](file:///c:/xampp1/htdocs/craftive/routes/api.php) pada Baris 21 & 30 (`Route::get('/products', ...)`).
+    3.  **Backend Middleware (Filter):** Mengamankan katalog dari bot/scraping luar.
+        *   *Lokasi Kode:* [app/Http/Middleware/ApiKeyMiddleware.php](file:///c:/xampp1/htdocs/craftive/app/Http/Middleware/ApiKeyMiddleware.php) pada fungsi `handle()` (Baris 10 - 17). Memastikan isi header `X-API-KEY` bernilai cocok.
+    4.  **Backend Controller (Logika):** Menarik data dari database dan mengembalikannya sebagai JSON.
+        *   *Lokasi Kode:* [app/Http/Controllers/Public/ProductController.php](file:///c:/xampp1/htdocs/craftive/app/Http/Controllers/Public/ProductController.php) pada method `index()`.
+    5.  **Frontend Render:** JavaScript menerima data JSON, memasukannya ke variabel Alpine.js (`this.products`), lalu merender kartu produk ke layar secara reaktif menggunakan direktif `x-for` (Baris 133 - 208).
+
+---
+
+### 🛒 2. Fitur Kelola Keranjang Belanja (Cart)
+*   **Pake Apa?** Fungsi JavaScript pembungkus `window.apiFetch()` (yang menyisipkan token JWT Bearer secara otomatis di header) untuk mengirim request `POST` / `DELETE` berformat JSON.
+*   **Bagaimana Alurnya?**
+    1.  **Frontend (Tampilan):** Pembeli mengklik tombol **"Add"** pada salah satu produk kriya.
+        *   *Lokasi Kode:* [resources/views/pages/products.blade.php](file:///c:/xampp1/htdocs/craftive/resources/views/pages/products.blade.php) pada method `addToCart(productId)` (Baris 336 - 368). Mengirim `POST` ke `/api/buyer/cart` membawa JSON body `{"product_id": 1, "qty": 1}`.
+    2.  **Otomatisasi Token JWT:**
+        *   *Lokasi Kode:* [resources/views/layouts/app.blade.php](file:///c:/xampp1/htdocs/craftive/resources/views/layouts/app.blade.php) pada helper JS `window.apiFetch`. Fungsi ini membaca token JWT pembeli dari *localStorage* browser dan menyisipkannya ke header `Authorization: Bearer <token_jwt>`.
+    3.  **Backend Routing & Middleware (Otorisasi):**
+        *   *Lokasi Kode:* [routes/api.php](file:///c:/xampp1/htdocs/craftive/routes/api.php) pada Baris 97 - 99. Dilindungi middleware `'jwt.auth'` (memastikan login aktif) dan middleware `'role:buyer'` (memastikan peran adalah pembeli).
+        *   *Role Filter:* [app/Http/Middleware/RoleMiddleware.php](file:///c:/xampp1/htdocs/craftive/app/Http/Middleware/RoleMiddleware.php) pada fungsi `handle()` (Baris 11 - 18).
+    4.  **Backend Controller (Logika):**
+        *   *Lokasi Kode:* [app/Http/Controllers/Buyer/CartController.php](file:///c:/xampp1/htdocs/craftive/app/Http/Controllers/Buyer/CartController.php) pada method `store()` untuk menyimpan item belanja ke tabel `carts`.
+
+---
+
+### 🧠 3. Fitur Agentic AI Custom Planner
+*   **Pake Apa?** Mengirimkan input teks spesifikasi material, budget, dan timeline pembeli menggunakan request `POST` JSON terproteksi JWT.
+*   **Bagaimana Alurnya?**
+    1.  **Frontend (Tampilan):** Pembeli mengisi form simulasi kriya kustom di dashboard pembeli, lalu menekan **"Mulai Simulasi AI"**.
+        *   *Lokasi Kode:* [resources/views/user/dashboard.blade.php](file:///c:/xampp1/htdocs/craftive/resources/views/user/dashboard.blade.php) pada fungsi JS `submitAiPlanner()`.
+    2.  **Backend Routing:**
+        *   *Lokasi Kode:* [routes/api.php](file:///c:/xampp1/htdocs/craftive/routes/api.php) pada Baris 69 & 103 (`Route::post('/buyer/custom-planner', ...)`).
+    3.  **Backend Controller (AI Logic Heuristik):**
+        *   *Lokasi Kode:* [app/Http/Controllers/AiRecommendationController.php](file:///c:/xampp1/htdocs/craftive/app/Http/Controllers/AiRecommendationController.php) pada fungsi `planCustomKriya()` (Baris 63 - 128). Backend menghitung alokasi budget (35% material, 45% tarif perajin), menguji timeline/kesulitan kriya, merekomendasikan sanggar perajin yang cocok, menyimpan riwayat analisis ke tabel `ai_recommendations`, dan mengembalikan data JSON analisis ke browser.
+
+---
+
+### 🤝 4. Fitur Proposal Kustom & Pembuatan Order Otomatis (Strict Order Workflow)
+*   **Pake Apa?** Request `PATCH` berisi persetujuan status proposal dari perajin (seller) untuk memicu database transaction yang membuat pesanan baru secara otomatis.
+*   **Bagaimana Alurnya?**
+    1.  **Frontend (Tampilan):** Perajin membuka kotak masuk proposal kustom di dashboard-nya, lalu mengklik tombol **"Setujui Proposal"** (status: `accepted`).
+        *   *Lokasi Kode:* [resources/views/seller/dashboard.blade.php](file:///c:/xampp1/htdocs/craftive/resources/views/seller/dashboard.blade.php) pada fungsi JS `acceptProposal(id)`.
+    2.  **Backend Routing & Middleware:**
+        *   *Lokasi Kode:* [routes/api.php](file:///c:/xampp1/htdocs/craftive/routes/api.php) pada Baris 122 (`Route::patch('/proposals/{id}', ...)`). Dilindungi middleware `'role:seller'`.
+    3.  **Backend Controller (Logika Order Otomatis):**
+        *   *Lokasi Kode:* [app/Http/Controllers/Buyer/CustomProposalController.php](file:///c:/xampp1/htdocs/craftive/app/Http/Controllers/Buyer/CustomProposalController.php) pada fungsi `accept()` (Baris 95 - 164).
+        *   *Logika Bisnis:*
+            *   Membuat produk baru secara dinamis di database dengan status `is_active = false` agar tersembunyi dari katalog umum.
+            *   Membuat pesanan baru di tabel `orders` dengan total harga sesuai budget yang disetujui.
+            *   Membuat detail item pesanan di tabel `order_items` yang merujuk pada produk kustom tadi.
+            *   Memperbarui status proposal kustom di tabel `custom_proposals` menjadi `accepted`.
+
+---
+
+## ❓ BAGIAN 6: Bank Pertanyaan Ujian UAS & Cara Menjawabnya (Akademik Premium)
 
 Berikut adalah prediksi pertanyaan tajam yang biasa diajukan oleh Pak Adam saat demo proyek API beserta jawaban akademis yang terstruktur:
 

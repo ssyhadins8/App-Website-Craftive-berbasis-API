@@ -1,4 +1,4 @@
-# 🏺 Craftive - Premium Handmade Goods Marketplace & REST API
+# Craftive - Premium Handmade Goods Marketplace & REST API
 
 [![Laravel Version](https://img.shields.io/badge/Laravel-v12.0-red?style=flat-square&logo=laravel)](https://laravel.com)
 [![PHP Version](https://img.shields.io/badge/PHP-%5E8.2-blue?style=flat-square&logo=php)](https://php.net)

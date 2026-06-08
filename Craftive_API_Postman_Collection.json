@@ -1,1186 +1,1023 @@
 {
 	"info": {
-		"_postman_id": "7d9b9a6b-c3e4-44b2-841a-5b6d5c5f3e9c",
-		"name": "Craftive Premium API & AI Planner",
-		"description": "Dokumentasi Lengkap API dan Pengujian untuk Aplikasi Craftive - UAS Pemrograman API",
+		"_postman_id": "craftive-api-collection-2026",
+		"name": "🎨 Craftive API - UAS Collection",
+		"description": "Koleksi endpoint REST API Craftive - Marketplace Kerajinan Tangan Premium\n\n**Cara pakai:**\n1. Set variable `base_url` = `http://localhost:8000/api`\n2. Set variable `api_key` = `craftive-secret-key-2024`\n3. Login dulu di folder Auth → simpan token ke variable `jwt_token`\n4. Semua request protected akan otomatis pakai token tsb",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
-	"item": [
-		{
-			"name": "1. Public Data (No Auth / API Key)",
-			"item": [
-				{
-					"name": "Get All Categories",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-API-KEY",
-								"value": "craftive-public-key-2026",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/categories",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"categories"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Products (All)",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-API-KEY",
-								"value": "craftive-public-key-2026",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/products",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"products"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Shop Info by ID",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-API-KEY",
-								"value": "craftive-public-key-2026",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/shops/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"shops",
-								"1"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "2. Authentication",
-			"item": [
-				{
-					"name": "Register User",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"Testing Buyer\",\n    \"email\": \"testbuyer@craftive.id\",\n    \"password\": \"password\",\n    \"password_confirmation\": \"password\",\n    \"role\": \"buyer\",\n    \"phone\": \"081999888777\",\n    \"address\": \"Jl. Keadilan No. 12, Jakarta\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/auth/register",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"auth",
-								"register"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login Admin",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"if(jsonData.access_token) {",
-									"    pm.environment.set(\"jwt_token\", jsonData.access_token);",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\": \"admin@craftive.id\",\n    \"password\": \"password\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/auth/login",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"auth",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login Buyer (Siti Rahayu)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"if(jsonData.access_token) {",
-									"    pm.environment.set(\"jwt_token\", jsonData.access_token);",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\": \"siti@craftive.id\",\n    \"password\": \"password\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/auth/login",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"auth",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login Seller (Artisan)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"if(jsonData.access_token) {",
-									"    pm.environment.set(\"jwt_token\", jsonData.access_token);",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\": \"seller@craftive.id\",\n    \"password\": \"password\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/auth/login",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"auth",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Basic Auth Profile",
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "password",
-									"value": "password",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "admin@craftive.id",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/profile/me",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"profile",
-								"me"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "3. AI Agent Custom Planner",
-			"item": [
-				{
-					"name": "Kriya Custom Planner Analysis",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"specifications\": \"Ukiran kaligrafi kayu jati ukuran 80x40 cm dengan bingkai emas ukiran mega mendung\",\n    \"materials\": \"Kayu Jati Perhutani, Pelitur Alami, Cat Emas Akrilik\",\n    \"budget\": 750000,\n    \"timeline\": 10\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/ai/custom-planner",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"ai",
-								"custom-planner"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Kirim Proposal Custom Ke Perajin",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"craft_type\": \"Kaligrafi Jati\",\n    \"material\": \"Kayu Jati, Pelitur\",\n    \"budget\": 750000,\n    \"deadline_days\": 10,\n    \"description\": \"Ukiran kaligrafi kayu jati mega mendung\",\n    \"difficulty\": \"Sedang\",\n    \"estimated_days\": 9,\n    \"material_cost\": 262500,\n    \"labor_cost\": 337500,\n    \"shop_recommendation\": \"Sanggar Keramik Kasongan\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/custom-proposals",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"custom-proposals"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Custom Proposal (DELETE)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/custom-proposals/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"custom-proposals",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "General AI Recommend Products",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"budget\": 300000,\n    \"style\": \"Batik\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/ai/recommend",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"ai",
-								"recommend"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "4. Buyer Flow (Cart & Order)",
-			"item": [
-				{
-					"name": "Get Cart",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/buyer/cart",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"buyer",
-								"cart"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add Item to Cart",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"product_id\": 1,\n    \"qty\": 1\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/buyer/cart",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"buyer",
-								"cart"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Checkout (Create Order)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"shipping_address\": \"Perumahan Kasongan Indah No. 45, Bantul, Yogyakarta\",\n    \"notes\": \"Beri label barang pecah belah ya pak\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/buyer/checkout",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"buyer",
-								"checkout"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Item from Cart (DELETE)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/buyer/cart/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"buyer",
-								"cart",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Upload Payment Base64",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"order_id\": 1,\n    \"proof_image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/buyer/payments",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"buyer",
-								"payments"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "5. Artisan (Seller) Product CRUD & Proposal Flow",
-			"item": [
-				{
-					"name": "Get Artisan Products (Read)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/artisan/products",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"artisan",
-								"products"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Product (Create)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"category_id\": 1,\n    \"name\": \"Mangkuk Tanah Liat Pekalongan\",\n    \"description\": \"Mangkuk tanah liat buatan tangan tradisional dengan finishing alami.\",\n    \"price\": 45000,\n    \"stock\": 25,\n    \"style\": \"Bohemian\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/artisan/products",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"artisan",
-								"products"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Product (Update)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"Mangkuk Pekalongan - Edisi Spesial\",\n    \"price\": 50000,\n    \"stock\": 30,\n    \"style\": \"Tradisional\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/artisan/products/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"artisan",
-								"products",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Product (Delete)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/artisan/products/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"artisan",
-								"products",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Inbound Proposals",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/artisan/proposals",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"artisan",
-								"proposals"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Process Proposal (Accept/Reject)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"status\": \"accepted\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/artisan/proposals/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"artisan",
-								"proposals",
-								"1"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "6. Admin Dashboard Actions",
-			"item": [
-				{
-					"name": "Admin Overview Stats",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/admin/dashboard",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"admin",
-								"dashboard"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Admin - Get Users List",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/admin/users",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"admin",
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Admin - Verify Shop",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"is_verified\": true\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/admin/shops/1/verify",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"admin",
-								"shops",
-								"1",
-								"verify"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Admin - Update Order Status",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"status\": \"paid\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/admin/orders/1/status",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"admin",
-								"orders",
-								"1",
-								"status"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Admin - Delete User (DELETE)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/admin/users/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"admin",
-								"users",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Admin - Delete Product (DELETE)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/admin/products/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"admin",
-								"products",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Admin - Delete Shop (DELETE)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{jwt_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/admin/shops/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"admin",
-								"shops",
-								"1"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		}
-	],
 	"variable": [
 		{
 			"key": "base_url",
-			"value": "http://localhost/craftive/public/api"
+			"value": "http://localhost:8000/api",
+			"type": "string"
+		},
+		{
+			"key": "api_key",
+			"value": "craftive-secret-key-2024",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "🔐 Auth",
+			"description": "Endpoint Autentikasi: Register, Login, Logout, dan manajemen profil menggunakan JWT.",
+			"item": [
+				{
+					"name": "Register (Buyer)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var json = pm.response.json();",
+									"if (json.token) {",
+									"    pm.collectionVariables.set('jwt_token', json.token);",
+									"    console.log('Token tersimpan:', json.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Siti Pembeli\",\n    \"email\": \"siti@craftive.id\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\",\n    \"role\": \"buyer\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "register"]
+						},
+						"description": "Mendaftarkan akun buyer baru. Setelah berhasil, token JWT otomatis tersimpan ke variable koleksi."
+					}
+				},
+				{
+					"name": "Register (Seller)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Budi Pengrajin\",\n    \"email\": \"budi.seller@craftive.id\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\",\n    \"role\": \"seller\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "register"]
+						},
+						"description": "Mendaftarkan akun seller (artisan/pengrajin) baru."
+					}
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var json = pm.response.json();",
+									"if (json.access_token) {",
+									"    pm.collectionVariables.set('jwt_token', json.access_token);",
+									"    console.log('✅ Token JWT tersimpan!');",
+									"    console.log('User:', json.user.name, '| Role:', json.user.role);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"siti@craftive.id\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						},
+						"description": "Login dan dapatkan token JWT. Token otomatis tersimpan ke variable `jwt_token` via test script."
+					}
+				},
+				{
+					"name": "Login (Admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var json = pm.response.json();",
+									"if (json.access_token) {",
+									"    pm.collectionVariables.set('jwt_token', json.access_token);",
+									"    console.log('✅ Admin token tersimpan!');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@craftive.id\",\n    \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						},
+						"description": "Login sebagai Admin untuk mengakses endpoint admin."
+					}
+				},
+				{
+					"name": "Me (Profil Sendiri)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/me",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "me"]
+						},
+						"description": "Melihat data profil pengguna yang sedang login."
+					}
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Siti Rahayu Updated\",\n    \"email\": \"siti@craftive.id\",\n    \"phone\": \"081234567890\",\n    \"address\": \"Jl. Batik No.5, Yogyakarta\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/profile",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "profile"]
+						},
+						"description": "Memperbarui data profil pengguna yang sedang login."
+					}
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/refresh",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "refresh"]
+						},
+						"description": "Memperbarui token JWT sebelum kadaluarsa."
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/logout",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "logout"]
+						},
+						"description": "Keluar dan invalidasi token JWT."
+					}
+				},
+				{
+					"name": "Forgot Password (OTP)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"siti@craftive.id\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/forgot-password",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "forgot-password"]
+						},
+						"description": "Meminta kode OTP untuk reset password."
+					}
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"siti@craftive.id\",\n    \"otp\": \"123456\",\n    \"password\": \"newpassword123\",\n    \"password_confirmation\": \"newpassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/reset-password",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "reset-password"]
+						},
+						"description": "Reset password menggunakan OTP yang diterima."
+					}
+				},
+				{
+					"name": "Basic Auth - Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"}
+						],
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{"key": "username", "value": "siti@craftive.id"},
+								{"key": "password", "value": "password123"}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/profile/me",
+							"host": ["{{base_url}}"],
+							"path": ["profile", "me"]
+						},
+						"description": "Contoh HTTP Basic Auth - mengirim email:password langsung tanpa JWT."
+					}
+				}
+			]
+		},
+		{
+			"name": "🌍 Public (Tanpa Login)",
+			"description": "Endpoint publik yang hanya membutuhkan API Key.",
+			"item": [
+				{
+					"name": "Semua Produk",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "X-API-Key", "value": "{{api_key}}"},
+							{"key": "Accept", "value": "application/json"}
+						],
+						"url": {
+							"raw": "{{base_url}}/products",
+							"host": ["{{base_url}}"],
+							"path": ["products"]
+						},
+						"description": "Mendapatkan daftar semua produk yang tersedia."
+					}
+				},
+				{
+					"name": "Detail Produk",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "X-API-Key", "value": "{{api_key}}"},
+							{"key": "Accept", "value": "application/json"}
+						],
+						"url": {
+							"raw": "{{base_url}}/products/1",
+							"host": ["{{base_url}}"],
+							"path": ["products", "1"]
+						},
+						"description": "Mendapatkan detail produk berdasarkan ID."
+					}
+				},
+				{
+					"name": "Ulasan Produk",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "X-API-Key", "value": "{{api_key}}"},
+							{"key": "Accept", "value": "application/json"}
+						],
+						"url": {
+							"raw": "{{base_url}}/products/1/reviews",
+							"host": ["{{base_url}}"],
+							"path": ["products", "1", "reviews"]
+						},
+						"description": "Mendapatkan semua ulasan untuk produk tertentu."
+					}
+				},
+				{
+					"name": "Semua Kategori",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "X-API-Key", "value": "{{api_key}}"},
+							{"key": "Accept", "value": "application/json"}
+						],
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": ["{{base_url}}"],
+							"path": ["categories"]
+						},
+						"description": "Mendapatkan daftar semua kategori produk."
+					}
+				},
+				{
+					"name": "Semua Toko",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "X-API-Key", "value": "{{api_key}}"},
+							{"key": "Accept", "value": "application/json"}
+						],
+						"url": {
+							"raw": "{{base_url}}/shops",
+							"host": ["{{base_url}}"],
+							"path": ["shops"]
+						},
+						"description": "Mendapatkan daftar semua toko/artisan."
+					}
+				},
+				{
+					"name": "Detail Toko",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "X-API-Key", "value": "{{api_key}}"},
+							{"key": "Accept", "value": "application/json"}
+						],
+						"url": {
+							"raw": "{{base_url}}/shops/1",
+							"host": ["{{base_url}}"],
+							"path": ["shops", "1"]
+						},
+						"description": "Mendapatkan detail toko berdasarkan ID."
+					}
+				},
+				{
+					"name": "AI Rekomendasi Produk",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "X-API-Key", "value": "{{api_key}}"},
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"budget\": 500000,\n    \"style\": \"minimalist\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/ai/recommend",
+							"host": ["{{base_url}}"],
+							"path": ["ai", "recommend"]
+						},
+						"description": "Mendapatkan rekomendasi produk dari AI berdasarkan budget dan style."
+					}
+				}
+			]
+		},
+		{
+			"name": "🛒 Buyer (Perlu Login Buyer)",
+			"description": "Endpoint untuk buyer. Wajib login dulu dan sertakan token JWT.",
+			"item": [
+				{
+					"name": "Lihat Keranjang",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/buyer/cart",
+							"host": ["{{base_url}}"],
+							"path": ["buyer", "cart"]
+						},
+						"description": "Melihat semua item dalam keranjang belanja."
+					}
+				},
+				{
+					"name": "Tambah ke Keranjang",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product_id\": 1,\n    \"quantity\": 2\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/buyer/cart",
+							"host": ["{{base_url}}"],
+							"path": ["buyer", "cart"]
+						},
+						"description": "Menambahkan produk ke keranjang belanja."
+					}
+				},
+				{
+					"name": "Hapus dari Keranjang",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/buyer/cart/1",
+							"host": ["{{base_url}}"],
+							"path": ["buyer", "cart", "1"]
+						},
+						"description": "Menghapus item dari keranjang berdasarkan ID cart."
+					}
+				},
+				{
+					"name": "Checkout (Buat Pesanan)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"seller_id\": 2,\n    \"items\": [\n        {\"product_id\": 1, \"quantity\": 2, \"price\": 150000}\n    ],\n    \"total_amount\": 300000,\n    \"shipping_address\": \"Jl. Contoh No.1, Jakarta\",\n    \"notes\": \"Tolong bungkus dengan rapih\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/buyer/checkout",
+							"host": ["{{base_url}}"],
+							"path": ["buyer", "checkout"]
+						},
+						"description": "Melakukan checkout dan membuat pesanan baru."
+					}
+				},
+				{
+					"name": "Riwayat Pesanan",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/buyer/orders",
+							"host": ["{{base_url}}"],
+							"path": ["buyer", "orders"]
+						},
+						"description": "Melihat semua riwayat pesanan buyer."
+					}
+				},
+				{
+					"name": "Upload Bukti Pembayaran",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"order_id\": 1,\n    \"payment_method\": \"transfer_bank\",\n    \"proof_image\": \"https://example.com/bukti-transfer.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/buyer/payments",
+							"host": ["{{base_url}}"],
+							"path": ["buyer", "payments"]
+						},
+						"description": "Upload bukti pembayaran untuk pesanan yang sudah dibuat."
+					}
+				},
+				{
+					"name": "AI Custom Planner",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"specifications\": \"Tas anyaman rotan ukuran 30x20cm dengan tali panjang 60cm, warna natural\",\n    \"materials\": \"rotan alam, benang katun coklat\",\n    \"budget\": 750000,\n    \"timeline\": 14\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/buyer/custom-planner",
+							"host": ["{{base_url}}"],
+							"path": ["buyer", "custom-planner"]
+						},
+						"description": "Menggunakan AI untuk merencanakan produk kriya custom. AI akan menghitung biaya, tingkat kesulitan, dan merekomendasikan artisan."
+					}
+				},
+				{
+					"name": "Beri Ulasan Produk",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product_id\": 1,\n    \"rating\": 5,\n    \"comment\": \"Produk sangat bagus, pengrajinnya profesional!\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/reviews",
+							"host": ["{{base_url}}"],
+							"path": ["reviews"]
+						},
+						"description": "Memberikan ulasan dan rating untuk produk yang sudah dibeli."
+					}
+				},
+				{
+					"name": "Ajukan Proposal Custom",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"seller_id\": 2,\n    \"title\": \"Batik Custom Motif Bunga\",\n    \"description\": \"Saya ingin memesan batik tulis dengan motif bunga jasmine ukuran 2m x 1m\",\n    \"budget\": 1200000,\n    \"deadline\": \"2026-07-01\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/custom-proposals",
+							"host": ["{{base_url}}"],
+							"path": ["custom-proposals"]
+						},
+						"description": "Mengajukan proposal untuk pesanan kerajinan custom kepada seller."
+					}
+				}
+			]
+		},
+		{
+			"name": "🏪 Seller/Artisan (Perlu Login Seller)",
+			"description": "Endpoint untuk seller/artisan. Login sebagai seller dulu.",
+			"item": [
+				{
+					"name": "Lihat Produk Toko Saya",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/artisan/products",
+							"host": ["{{base_url}}"],
+							"path": ["artisan", "products"]
+						},
+						"description": "Melihat semua produk milik toko seller yang sedang login."
+					}
+				},
+				{
+					"name": "Tambah Produk Baru",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"category_id\": 1,\n    \"name\": \"Tas Rotan Handmade Premium\",\n    \"description\": \"Tas anyaman rotan asli buatan tangan pengrajin Yogyakarta\",\n    \"price\": 350000,\n    \"stock\": 10,\n    \"style\": \"bohemian\",\n    \"target_demographic\": \"dewasa\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/artisan/products",
+							"host": ["{{base_url}}"],
+							"path": ["artisan", "products"]
+						},
+						"description": "Menambahkan produk baru ke toko seller."
+					}
+				},
+				{
+					"name": "Update Produk",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"category_id\": 1,\n    \"name\": \"Tas Rotan Handmade Premium (Edisi Terbaru)\",\n    \"description\": \"Tas anyaman rotan premium dengan finishing lebih halus\",\n    \"price\": 380000,\n    \"stock\": 8,\n    \"style\": \"bohemian\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/artisan/products/1",
+							"host": ["{{base_url}}"],
+							"path": ["artisan", "products", "1"]
+						},
+						"description": "Memperbarui data produk milik seller."
+					}
+				},
+				{
+					"name": "Hapus Produk",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/artisan/products/1",
+							"host": ["{{base_url}}"],
+							"path": ["artisan", "products", "1"]
+						},
+						"description": "Menghapus produk dari toko seller."
+					}
+				},
+				{
+					"name": "Lihat Pesanan Masuk",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/seller/orders",
+							"host": ["{{base_url}}"],
+							"path": ["seller", "orders"]
+						},
+						"description": "Melihat semua pesanan yang masuk ke toko seller."
+					}
+				},
+				{
+					"name": "Update Status Pesanan",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"shipped\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/seller/orders/1",
+							"host": ["{{base_url}}"],
+							"path": ["seller", "orders", "1"]
+						},
+						"description": "Memperbarui status pesanan (shipped, delivered, dll)."
+					}
+				},
+				{
+					"name": "Lihat Proposal Custom",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/artisan/proposals",
+							"host": ["{{base_url}}"],
+							"path": ["artisan", "proposals"]
+						},
+						"description": "Melihat semua proposal custom yang masuk dari buyer."
+					}
+				},
+				{
+					"name": "Terima/Tolak Proposal",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"accepted\",\n    \"notes\": \"Saya bisa kerjakan dalam 14 hari\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/artisan/proposals/1",
+							"host": ["{{base_url}}"],
+							"path": ["artisan", "proposals", "1"]
+						},
+						"description": "Menerima atau menolak proposal custom dari buyer. Status: accepted / rejected."
+					}
+				}
+			]
+		},
+		{
+			"name": "👑 Admin (Perlu Login Admin)",
+			"description": "Endpoint manajemen sistem. Hanya bisa diakses oleh admin.",
+			"item": [
+				{
+					"name": "Dashboard Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/dashboard",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "dashboard"]
+						},
+						"description": "Statistik ringkasan: total user, produk, pesanan, dan revenue."
+					}
+				},
+				{
+					"name": "Semua User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/users",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "users"]
+						},
+						"description": "Mendapatkan semua data pengguna terdaftar."
+					}
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Siti Rahayu\",\n    \"email\": \"siti@craftive.id\",\n    \"role\": \"buyer\",\n    \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/users/1",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "users", "1"]
+						},
+						"description": "Memperbarui data pengguna (nama, email, role, status aktif)."
+					}
+				},
+				{
+					"name": "Hapus User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/users/1",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "users", "1"]
+						},
+						"description": "Menghapus pengguna dari sistem."
+					}
+				},
+				{
+					"name": "Semua Produk (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/products",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "products"]
+						},
+						"description": "Mendapatkan semua produk dari semua toko."
+					}
+				},
+				{
+					"name": "Tambah Produk (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"shop_id\": 1,\n    \"category_id\": 2,\n    \"name\": \"Batik Tulis Motif Parang\",\n    \"description\": \"Batik tulis asli dari pengrajin Solo\",\n    \"price\": 850000,\n    \"stock\": 5,\n    \"style\": \"tradisional\",\n    \"target_demographic\": \"dewasa\",\n    \"image_url\": \"https://example.com/batik.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/products",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "products"]
+						},
+						"description": "Admin menambahkan produk baru ke sistem."
+					}
+				},
+				{
+					"name": "Update Produk (Admin)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"category_id\": 2,\n    \"name\": \"Batik Tulis Motif Parang Premium\",\n    \"description\": \"Batik tulis premium asli dari pengrajin Solo\",\n    \"price\": 950000,\n    \"stock\": 3,\n    \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/products/1",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "products", "1"]
+						},
+						"description": "Admin memperbarui data produk."
+					}
+				},
+				{
+					"name": "Hapus Produk (Admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/products/1",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "products", "1"]
+						},
+						"description": "Admin menghapus produk dari sistem."
+					}
+				},
+				{
+					"name": "Approve Produk",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/products/1/approve",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "products", "1", "approve"]
+						},
+						"description": "Admin menyetujui produk (mengaktifkan produk)."
+					}
+				},
+				{
+					"name": "Semua Toko",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/shops",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "shops"]
+						},
+						"description": "Mendapatkan semua data toko."
+					}
+				},
+				{
+					"name": "Verifikasi Toko",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"is_verified\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/shops/1/verify",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "shops", "1", "verify"]
+						},
+						"description": "Admin memverifikasi/unverifikasi toko seller."
+					}
+				},
+				{
+					"name": "Hapus Toko",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/shops/1",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "shops", "1"]
+						},
+						"description": "Admin menghapus toko dari sistem."
+					}
+				},
+				{
+					"name": "Semua Transaksi",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/orders",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "orders"]
+						},
+						"description": "Mendapatkan semua transaksi pesanan di sistem."
+					}
+				},
+				{
+					"name": "Update Status Transaksi",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"paid\",\n    \"payment_status\": \"confirmed\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/orders/1/status",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "orders", "1", "status"]
+						},
+						"description": "Admin memperbarui status pesanan dan status pembayaran."
+					}
+				},
+				{
+					"name": "Tambah Kategori",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"},
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{jwt_token}}"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Keramik\",\n    \"description\": \"Produk kerajinan berbahan keramik dan tanah liat\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/categories",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "categories"]
+						},
+						"description": "Admin menambahkan kategori produk baru."
+					}
+				}
+			]
 		}
 	]
 }

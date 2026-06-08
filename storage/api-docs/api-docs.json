@@ -1,0 +1,602 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Craftive REST API",
+        "description": "Dokumentasi interaktif REST API Craftive - Premium Handmade Goods Marketplace dengan integrasi Agentic AI Custom Planner. Dikembangkan sebagai Tugas Akhir Pemrograman API - UNESA 2026.",
+        "contact": {
+            "email": "dev@craftive.id"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api",
+            "description": "Server Lokal"
+        }
+    ],
+    "paths": {
+        "/ai/recommend": {
+            "post": {
+                "tags": [
+                    "AI Recommendation"
+                ],
+                "summary": "Rekomendasi Produk AI",
+                "description": "Merekomendasikan hingga 3 produk sesuai budget dan style. Tidak perlu login, cukup API Key.",
+                "operationId": "92e391776f9cb1fc73a7ac1f7c595cbb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "budget"
+                                ],
+                                "properties": {
+                                    "budget": {
+                                        "description": "Budget maksimum dalam Rupiah",
+                                        "type": "number",
+                                        "example": 500000
+                                    },
+                                    "style": {
+                                        "description": "Gaya produk (opsional)",
+                                        "type": "string",
+                                        "example": "minimalist"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Rekomendasi berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "CRAFTIVE AI Recommendation"
+                                        },
+                                        "recommendations": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "price": {
+                                                        "type": "number"
+                                                    },
+                                                    "rating": {
+                                                        "type": "number"
+                                                    },
+                                                    "match": {
+                                                        "type": "string",
+                                                        "example": "92%"
+                                                    },
+                                                    "image_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "style": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validasi gagal"
+                    }
+                }
+            }
+        },
+        "/buyer/custom-planner": {
+            "post": {
+                "tags": [
+                    "AI Recommendation"
+                ],
+                "summary": "AI Custom Planner (Kriya)",
+                "description": "Merencanakan produk kriya custom. AI menghitung biaya, tingkat kesulitan, estimasi hari, dan merekomendasikan artisan. Wajib login sebagai buyer.",
+                "operationId": "1a742cdcab52f00333360b72ce7f03e5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "specifications",
+                                    "materials",
+                                    "budget",
+                                    "timeline"
+                                ],
+                                "properties": {
+                                    "specifications": {
+                                        "type": "string",
+                                        "example": "Tas anyaman rotan ukuran 30x20cm dengan tali panjang"
+                                    },
+                                    "materials": {
+                                        "type": "string",
+                                        "example": "rotan alam, benang katun"
+                                    },
+                                    "budget": {
+                                        "description": "Minimal Rp 10.000",
+                                        "type": "number",
+                                        "example": 750000
+                                    },
+                                    "timeline": {
+                                        "description": "Hari pengerjaan (minimal 1)",
+                                        "type": "integer",
+                                        "example": 14
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Rencana berhasil dibuat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "CRAFTIVE AI Custom Planner"
+                                        },
+                                        "planning": {
+                                            "properties": {
+                                                "difficulty": {
+                                                    "type": "string",
+                                                    "example": "Sedang"
+                                                },
+                                                "material_cost": {
+                                                    "type": "number",
+                                                    "example": 262500
+                                                },
+                                                "labor_cost": {
+                                                    "type": "number",
+                                                    "example": 337500
+                                                },
+                                                "estimated_price": {
+                                                    "type": "number",
+                                                    "example": 600000
+                                                },
+                                                "estimated_days": {
+                                                    "type": "integer",
+                                                    "example": 13
+                                                },
+                                                "shop_recommendation": {
+                                                    "type": "string",
+                                                    "example": "Sanggar Batik Nusantara"
+                                                },
+                                                "agent_reasoning": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Token tidak valid"
+                    },
+                    "422": {
+                        "description": "Validasi gagal"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "Autentikasi"
+                ],
+                "summary": "Registrasi Akun Baru",
+                "description": "Mendaftarkan buyer atau seller baru. Setelah berhasil, token JWT langsung diberikan.",
+                "operationId": "6703d7156c265a1e7b47e500d2a16304",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation",
+                                    "role"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Siti Rahayu"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "siti@craftive.id"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "example": "buyer",
+                                        "enum": [
+                                            "buyer",
+                                            "seller"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Registrasi berhasil, token JWT diberikan"
+                    },
+                    "422": {
+                        "description": "Validasi gagal"
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Autentikasi"
+                ],
+                "summary": "Login",
+                "description": "Login dengan email dan password. Token JWT dikembalikan untuk dipakai di request selanjutnya.",
+                "operationId": "a5385ffca73f113abef00ea604d1ca58",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "siti@craftive.id"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login berhasil, token JWT diberikan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "expires_in": {
+                                            "type": "integer",
+                                            "example": 3600
+                                        },
+                                        "user": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Email atau password salah"
+                    }
+                }
+            }
+        },
+        "/auth/me": {
+            "get": {
+                "tags": [
+                    "Autentikasi"
+                ],
+                "summary": "Profil Saya",
+                "description": "Mendapatkan data user yang sedang login berdasarkan token JWT.",
+                "operationId": "37252cdc2ae05f1e2e4fd541e987489d",
+                "responses": {
+                    "200": {
+                        "description": "Data profil user berhasil diambil"
+                    },
+                    "401": {
+                        "description": "Token tidak valid atau tidak ditemukan"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "tags": [
+                    "Autentikasi"
+                ],
+                "summary": "Logout",
+                "description": "Keluar dan invalidasi token JWT.",
+                "operationId": "0f6715df0d22b69c7e35bd32b4c1fc92",
+                "responses": {
+                    "200": {
+                        "description": "Logout berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Successfully logged out"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Token tidak valid"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/auth/refresh": {
+            "post": {
+                "tags": [
+                    "Autentikasi"
+                ],
+                "summary": "Refresh Token",
+                "description": "Memperbarui token JWT sebelum kadaluarsa.",
+                "operationId": "d47f685292e0aa5af0c07fa89740bc36",
+                "responses": {
+                    "200": {
+                        "description": "Token berhasil diperbarui"
+                    },
+                    "401": {
+                        "description": "Token tidak valid"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/auth/forgot-password": {
+            "post": {
+                "tags": [
+                    "Autentikasi"
+                ],
+                "summary": "Lupa Password (Minta OTP)",
+                "description": "Mengirim kode OTP 6 digit ke email untuk proses reset password.",
+                "operationId": "95b6a0c8e3f351c53bf9d5da3ff40aef",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "siti@craftive.id"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP berhasil dikirim ke email"
+                    },
+                    "422": {
+                        "description": "Email tidak terdaftar"
+                    }
+                }
+            }
+        },
+        "/auth/reset-password": {
+            "post": {
+                "tags": [
+                    "Autentikasi"
+                ],
+                "summary": "Reset Password dengan OTP",
+                "description": "Mengatur ulang password menggunakan kode OTP yang diterima via email.",
+                "operationId": "8575b62977a43fb7fa1132f5bec5e6d0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "otp",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "siti@craftive.id"
+                                    },
+                                    "otp": {
+                                        "type": "string",
+                                        "example": "123456"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newpassword123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newpassword123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password berhasil diperbarui"
+                    },
+                    "422": {
+                        "description": "OTP tidak valid atau kadaluarsa"
+                    }
+                }
+            }
+        },
+        "/auth/profile": {
+            "put": {
+                "tags": [
+                    "Autentikasi"
+                ],
+                "summary": "Update Profil",
+                "description": "Memperbarui nama, email, nomor telepon, dan alamat user yang sedang login.",
+                "operationId": "53b368677faed6b1a65bd95dcba817b1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Siti Rahayu"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "siti@craftive.id"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "081234567890"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Jl. Batik No.5, Yogyakarta"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Profil berhasil diperbarui"
+                    },
+                    "401": {
+                        "description": "Token tidak valid"
+                    },
+                    "422": {
+                        "description": "Validasi gagal"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Masukkan token JWT dari endpoint Login",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            },
+            "basicAuth": {
+                "type": "http",
+                "description": "HTTP Basic Auth (email & password)",
+                "scheme": "basic"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "AI Recommendation",
+            "description": "Rekomendasi produk dan perencanaan kriya custom berbasis AI Rule-Based."
+        },
+        {
+            "name": "Autentikasi",
+            "description": "Registrasi, Login, Logout, dan manajemen token JWT"
+        }
+    ]
+}

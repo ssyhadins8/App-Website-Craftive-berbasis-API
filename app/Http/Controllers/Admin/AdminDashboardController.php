@@ -131,6 +131,27 @@ class AdminDashboardController extends Controller
         return response()->json(['message' => 'Produk berhasil diperbarui', 'product' => $product]);
     }
 
+    #[OA\Delete(
+        path: '/admin/products/{id}',
+        tags: ['Admin'],
+        summary: 'Hapus Produk',
+        description: 'Menghapus produk berdasarkan ID. Hanya untuk admin.',
+        security: [['bearerAuth' => []]],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                description: 'ID produk yang akan dihapus',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            )
+        ],
+        responses: [
+            new OA\Response(response: 200, description: 'Produk berhasil dihapus'),
+            new OA\Response(response: 404, description: 'Produk tidak ditemukan'),
+            new OA\Response(response: 401, description: 'Tidak berwenang')
+        ]
+    )]
     public function deleteProduct($id)
     {
         $product = Product::findOrFail($id);

@@ -929,13 +929,13 @@ Guna memperjelas Gambar 2.1, berikut adalah penjabaran detail mengenai kolom uta
 Halaman depan platform dirancang menggunakan palet warna terracotta (<code>#C84B1E</code>) and linen-cream (<code>#FAF4EA</code>) yang merepresentasikan citra kriya lokal yang otentik dan premium:
 </p>
 
-<table style="width: 100%; border: none; margin: 10px 0; page-break-inside: avoid;">
-<tr style="background: none;">
-<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<table style="width: 100%; border: none !important; margin: 10px 0; page-break-inside: avoid; background: transparent !important;">
+<tr style="background: transparent !important; border: none !important;">
+<td style="width: 50%; text-align: center; border: none !important; padding: 0 10px; background: transparent !important;">
 <img src="public/images/reports/ui_landing_page.png" alt="Landing Page" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 6px; border: 1px solid #E2E8F0; margin: 0 auto;">
 <div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px; text-align: center;">Gambar 2.2: Landing Page</div>
 </td>
-<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<td style="width: 50%; text-align: center; border: none !important; padding: 0 10px; background: transparent !important;">
 <img src="public/images/reports/ui_katalog.png" alt="Katalog Filter" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 6px; border: 1px solid #E2E8F0; margin: 0 auto;">
 <div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px; text-align: center;">Gambar 2.3: Katalog & Filter</div>
 </td>
@@ -957,13 +957,13 @@ Halaman depan platform dirancang menggunakan palet warna terracotta (<code>#C84B
 Detail produk menampilkan data spesifikasi lengkap, sedangkan Dasbor Pembeli menyediakan antarmuka interaktif transaksi pribadi yang terlindung:
 </p>
 
-<table style="width: 100%; border: none; margin: 10px 0; page-break-inside: avoid;">
-<tr style="background: none;">
-<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<table style="width: 100%; border: none !important; margin: 10px 0; page-break-inside: avoid; background: transparent !important;">
+<tr style="background: transparent !important; border: none !important;">
+<td style="width: 50%; text-align: center; border: none !important; padding: 0 10px; background: transparent !important;">
 <img src="public/images/reports/ui_detail_produk.png" alt="Detail Produk" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 6px; border: 1px solid #E2E8F0; margin: 0 auto;">
 <div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px; text-align: center;">Gambar 2.4: Detail Produk</div>
 </td>
-<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<td style="width: 50%; text-align: center; border: none !important; padding: 0 10px; background: transparent !important;">
 <img src="public/images/reports/ui_dashboard_buyer.png" alt="Buyer Dashboard" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 6px; border: 1px solid #E2E8F0; margin: 0 auto;">
 <div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px; text-align: center;">Gambar 2.5: Dasbor Pembeli</div>
 </td>
@@ -985,13 +985,13 @@ Detail produk menampilkan data spesifikasi lengkap, sedangkan Dasbor Pembeli men
 Dasbor internal untuk perajin (seller) dan admin platform mengelola katalog dan verifikasi transaksi:
 </p>
 
-<table style="width: 100%; border: none; margin: 10px 0; page-break-inside: avoid;">
-<tr style="background: none;">
-<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<table style="width: 100%; border: none !important; margin: 10px 0; page-break-inside: avoid; background: transparent !important;">
+<tr style="background: transparent !important; border: none !important;">
+<td style="width: 50%; text-align: center; border: none !important; padding: 0 10px; background: transparent !important;">
 <img src="public/images/reports/ui_dashboard_seller.png" alt="Seller Dashboard" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 6px; border: 1px solid #E2E8F0; margin: 0 auto;">
 <div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px; text-align: center;">Gambar 2.6: Dasbor Penjual</div>
 </td>
-<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<td style="width: 50%; text-align: center; border: none !important; padding: 0 10px; background: transparent !important;">
 <img src="public/images/reports/ui_dashboard_admin.png" alt="Admin Dashboard" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 6px; border: 1px solid #E2E8F0; margin: 0 auto;">
 <div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px; text-align: center;">Gambar 2.7: Dasbor Admin</div>
 </td>
@@ -1028,13 +1028,13 @@ Berikut adalah panduan langkah demi langkah (step-by-step) pengujian sistem REST
 3. <strong>Uji Dengan Key:</strong> Tambahkan header <code>X-API-KEY</code> dengan nilai kunci rahasia <code>craftive-public-key-2026</code>. Klik <strong>Send</strong>. Server akan mengembalikan status <code>200 OK</code> beserta data seluruh produk.
 </p>
 
-<table style="width: 100%; border: none; margin: 10px 0; page-break-inside: avoid;">
-<tr style="background: none;">
-<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<table style="width: 100%; border: none !important; margin: 10px 0; page-break-inside: avoid; background: transparent !important;">
+<tr style="background: transparent !important; border: none !important;">
+<td style="width: 50%; text-align: center; border: none !important; padding: 0 10px; background: transparent !important;">
 <img src="public/images/reports/postman_auth_test.png" alt="Uji Login JWT" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 4px; border: 1px solid #E2E8F0; margin: 0 auto;">
 <div style="font-size: 8.5pt; font-style: italic; color: #666; margin-top: 3px; text-align: center;">Gambar 2.8: Penerbitan Token JWT</div>
 </td>
-<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<td style="width: 50%; text-align: center; border: none !important; padding: 0 10px; background: transparent !important;">
 <img src="public/images/reports/postman_apikey_test.png" alt="Uji Proteksi API Key" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 4px; border: 1px solid #E2E8F0; margin: 0 auto;">
 <div style="font-size: 8.5pt; font-style: italic; color: #666; margin-top: 3px; text-align: center;">Gambar 2.9: Penolakan Tanpa API Key</div>
 </td>
@@ -1068,13 +1068,13 @@ Berikut adalah panduan langkah demi langkah (step-by-step) pengujian sistem REST
 3. **Uji Role Perajin:** Gunakan token login perajin (role <code>seller</code>), lalu jalankan request kembali. Server akan memproses penambahan produk ke database dan memberikan respon status sukses <code>201 Created</code>.
 </p>
 
-<table style="width: 100%; border: none; margin: 10px 0; page-break-inside: avoid;">
-<tr style="background: none;">
-<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<table style="width: 100%; border: none !important; margin: 10px 0; page-break-inside: avoid; background: transparent !important;">
+<tr style="background: transparent !important; border: none !important;">
+<td style="width: 50%; text-align: center; border: none !important; padding: 0 10px; background: transparent !important;">
 <img src="public/images/reports/postman_basicauth_test.png" alt="Uji Basic Auth" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 4px; border: 1px solid #E2E8F0; margin: 0 auto;">
 <div style="font-size: 8.5pt; font-style: italic; color: #666; margin-top: 3px; text-align: center;">Gambar 2.10: HTTP Basic Profile</div>
 </td>
-<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<td style="width: 50%; text-align: center; border: none !important; padding: 0 10px; background: transparent !important;">
 <img src="public/images/reports/postman_crud_test.png" alt="Uji CRUD Admin" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 4px; border: 1px solid #E2E8F0; margin: 0 auto;">
 <div style="font-size: 8.5pt; font-style: italic; color: #666; margin-top: 3px; text-align: center;">Gambar 2.11: Hak Akses CRUD Admin</div>
 </td>

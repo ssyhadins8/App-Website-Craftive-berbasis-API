@@ -212,6 +212,53 @@
 					"response": []
 				},
 				{
+					"name": "Login Seller (Artisan)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if(jsonData.access_token) {",
+									"    pm.environment.set(\"jwt_token\", jsonData.access_token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"seller@craftive.id\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Basic Auth Profile",
 					"request": {
 						"auth": {
@@ -238,13 +285,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/auth/basic-profile",
+							"raw": "{{base_url}}/profile/me",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"auth",
-								"basic-profile"
+								"profile",
+								"me"
 							]
 						}
 					},
@@ -293,6 +340,48 @@
 							"path": [
 								"ai",
 								"custom-planner"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Kirim Proposal Custom Ke Perajin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"craft_type\": \"Kaligrafi Jati\",\n    \"material\": \"Kayu Jati, Pelitur\",\n    \"budget\": 750000,\n    \"deadline_days\": 10,\n    \"description\": \"Ukiran kaligrafi kayu jati mega mendung\",\n    \"difficulty\": \"Sedang\",\n    \"estimated_days\": 9,\n    \"material_cost\": 262500,\n    \"labor_cost\": 337500,\n    \"shop_recommendation\": \"Sanggar Keramik Kasongan\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/custom-proposals",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"custom-proposals"
 							]
 						}
 					},
@@ -368,11 +457,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{base_url}}/cart",
+							"raw": "{{base_url}}/buyer/cart",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"buyer",
 								"cart"
 							]
 						}
@@ -410,11 +500,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/cart",
+							"raw": "{{base_url}}/buyer/cart",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"buyer",
 								"cart"
 							]
 						}
@@ -452,12 +543,91 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/orders",
+							"raw": "{{base_url}}/buyer/checkout",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"orders"
+								"buyer",
+								"checkout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Item from Cart (DELETE)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/buyer/cart/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"buyer",
+								"cart",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Payment Base64",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"order_id\": 1,\n    \"proof_image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/buyer/payments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"buyer",
+								"payments"
 							]
 						}
 					},
@@ -466,7 +636,246 @@
 			]
 		},
 		{
-			"name": "5. Admin Dashboard Actions",
+			"name": "5. Artisan (Seller) Product CRUD & Proposal Flow",
+			"item": [
+				{
+					"name": "Get Artisan Products (Read)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/artisan/products",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"artisan",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product (Create)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"category_id\": 1,\n    \"name\": \"Mangkuk Tanah Liat Pekalongan\",\n    \"description\": \"Mangkuk tanah liat buatan tangan tradisional dengan finishing alami.\",\n    \"price\": 45000,\n    \"stock\": 25,\n    \"style\": \"Bohemian\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/artisan/products",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"artisan",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product (Update)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Mangkuk Pekalongan - Edisi Spesial\",\n    \"price\": 50000,\n    \"stock\": 30,\n    \"style\": \"Tradisional\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/artisan/products/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"artisan",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product (Delete)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/artisan/products/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"artisan",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Inbound Proposals",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/artisan/proposals",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"artisan",
+								"proposals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Process Proposal (Accept/Reject)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"accepted\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/artisan/proposals/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"artisan",
+								"proposals",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "6. Admin Dashboard Actions",
 			"item": [
 				{
 					"name": "Admin Overview Stats",
@@ -604,7 +1013,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"status\": \"paid\",\n    \"payment_status\": \"confirmed\"\n}",
+							"raw": "{\n    \"status\": \"paid\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

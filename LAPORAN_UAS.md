@@ -121,7 +121,7 @@ The REST API security system on this platform is designed using a three-layer ar
 <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-left: 20px; margin-bottom: 8px;">
 <span>1.3. Tujuan Dibuatnya Aplikasi</span>
 <span style="flex-grow: 1; border-bottom: 1px dotted #ccc; margin: 0 10px 4px 10px;"></span>
-<span>2</span>
+<span>3</span>
 </div>
 <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px; font-weight: bold;">
 <span>BAB 2: PEMBAHASAN</span>
@@ -136,12 +136,12 @@ The REST API security system on this platform is designed using a three-layer ar
 <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-left: 20px; margin-bottom: 8px;">
 <span>2.2. Fitur-fitur Utama & Cara Kerja</span>
 <span style="flex-grow: 1; border-bottom: 1px dotted #ccc; margin: 0 10px 4px 10px;"></span>
-<span>4</span>
+<span>6</span>
 </div>
 <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-left: 20px; margin-bottom: 8px;">
 <span>2.3. Keamanan & Autentikasi API</span>
 <span style="flex-grow: 1; border-bottom: 1px dotted #ccc; margin: 0 10px 4px 10px;"></span>
-<span>7</span>
+<span>8</span>
 </div>
 <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-left: 20px; margin-bottom: 8px;">
 <span>2.4. CRUD Endpoints Platform</span>
@@ -929,16 +929,18 @@ Guna memperjelas Gambar 2.1, berikut adalah penjabaran detail mengenai kolom uta
 Halaman depan platform dirancang menggunakan palet warna terracotta (<code>#C84B1E</code>) and linen-cream (<code>#FAF4EA</code>) yang merepresentasikan citra kriya lokal yang otentik dan premium:
 </p>
 
-<div style="display: flex; gap: 15px; justify-content: center; margin: 10px 0;">
-<div style="text-align: center; width: 48%;">
-<img src="public/images/reports/ui_landing_page.png" alt="Landing Page" style="width: 100%; height: auto; border-radius: 6px; border: 1px solid #E2E8F0;">
-<div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px;">Gambar 2.2: Landing Page</div>
-</div>
-<div style="text-align: center; width: 48%;">
-<img src="public/images/reports/ui_katalog.png" alt="Katalog Filter" style="width: 100%; height: auto; border-radius: 6px; border: 1px solid #E2E8F0;">
-<div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px;">Gambar 2.3: Katalog & Filter</div>
-</div>
-</div>
+<table style="width: 100%; border: none; margin: 10px 0; page-break-inside: avoid;">
+<tr style="background: none;">
+<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<img src="public/images/reports/ui_landing_page.png" alt="Landing Page" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 6px; border: 1px solid #E2E8F0; margin: 0 auto;">
+<div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px; text-align: center;">Gambar 2.2: Landing Page</div>
+</td>
+<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<img src="public/images/reports/ui_katalog.png" alt="Katalog Filter" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 6px; border: 1px solid #E2E8F0; margin: 0 auto;">
+<div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px; text-align: center;">Gambar 2.3: Katalog & Filter</div>
+</td>
+</tr>
+</table>
 
 <h4 style="font-family: 'Outfit', sans-serif; font-size: 11pt; font-weight: 700; color: #C84B1E; margin-top: 15px; margin-bottom: 5px;">b. Penjelasan navigasi dan fungsionalitas antar halaman</h4>
 <p style="text-align: justify; margin-top: 5px; font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.5;">
@@ -955,16 +957,18 @@ Halaman depan platform dirancang menggunakan palet warna terracotta (<code>#C84B
 Detail produk menampilkan data spesifikasi lengkap, sedangkan Dasbor Pembeli menyediakan antarmuka interaktif transaksi pribadi yang terlindung:
 </p>
 
-<div style="display: flex; gap: 15px; justify-content: center; margin: 10px 0;">
-<div style="text-align: center; width: 48%;">
-<img src="public/images/reports/ui_detail_produk.png" alt="Detail Produk" style="width: 100%; height: auto; border-radius: 6px; border: 1px solid #E2E8F0;">
-<div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px;">Gambar 2.4: Detail Produk</div>
-</div>
-<div style="text-align: center; width: 48%;">
-<img src="public/images/reports/ui_dashboard_buyer.png" alt="Buyer Dashboard" style="width: 100%; height: auto; border-radius: 6px; border: 1px solid #E2E8F0;">
-<div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px;">Gambar 2.5: Dasbor Pembeli</div>
-</div>
-</div>
+<table style="width: 100%; border: none; margin: 10px 0; page-break-inside: avoid;">
+<tr style="background: none;">
+<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<img src="public/images/reports/ui_detail_produk.png" alt="Detail Produk" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 6px; border: 1px solid #E2E8F0; margin: 0 auto;">
+<div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px; text-align: center;">Gambar 2.4: Detail Produk</div>
+</td>
+<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<img src="public/images/reports/ui_dashboard_buyer.png" alt="Buyer Dashboard" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 6px; border: 1px solid #E2E8F0; margin: 0 auto;">
+<div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px; text-align: center;">Gambar 2.5: Dasbor Pembeli</div>
+</td>
+</tr>
+</table>
 
 <h4 style="font-family: 'Outfit', sans-serif; font-size: 11pt; font-weight: 700; color: #C84B1E; margin-top: 15px; margin-bottom: 5px;">b. Penjelasan navigasi dan fungsionalitas antar halaman (Lanjutan)</h4>
 <p style="text-align: justify; margin-top: 5px; font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.5;">
@@ -981,16 +985,18 @@ Detail produk menampilkan data spesifikasi lengkap, sedangkan Dasbor Pembeli men
 Dasbor internal untuk perajin (seller) dan admin platform mengelola katalog dan verifikasi transaksi:
 </p>
 
-<div style="display: flex; gap: 15px; justify-content: center; margin: 10px 0;">
-<div style="text-align: center; width: 48%;">
-<img src="public/images/reports/ui_dashboard_seller.png" alt="Seller Dashboard" style="width: 100%; height: auto; border-radius: 6px; border: 1px solid #E2E8F0;">
-<div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px;">Gambar 2.6: Dasbor Penjual</div>
-</div>
-<div style="text-align: center; width: 48%;">
-<img src="public/images/reports/ui_dashboard_admin.png" alt="Admin Dashboard" style="width: 100%; height: auto; border-radius: 6px; border: 1px solid #E2E8F0;">
-<div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px;">Gambar 2.7: Dasbor Admin</div>
-</div>
-</div>
+<table style="width: 100%; border: none; margin: 10px 0; page-break-inside: avoid;">
+<tr style="background: none;">
+<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<img src="public/images/reports/ui_dashboard_seller.png" alt="Seller Dashboard" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 6px; border: 1px solid #E2E8F0; margin: 0 auto;">
+<div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px; text-align: center;">Gambar 2.6: Dasbor Penjual</div>
+</td>
+<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<img src="public/images/reports/ui_dashboard_admin.png" alt="Admin Dashboard" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 6px; border: 1px solid #E2E8F0; margin: 0 auto;">
+<div style="font-size: 9pt; font-style: italic; color: #666; margin-top: 4px; text-align: center;">Gambar 2.7: Dasbor Admin</div>
+</td>
+</tr>
+</table>
 
 <h4 style="font-family: 'Outfit', sans-serif; font-size: 11pt; font-weight: 700; color: #C84B1E; margin-top: 15px; margin-bottom: 5px;">b. Penjelasan navigasi dan fungsionalitas antar halaman (Lanjutan)</h4>
 <p style="text-align: justify; margin-top: 5px; font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.5;">
@@ -1022,16 +1028,18 @@ Berikut adalah panduan langkah demi langkah (step-by-step) pengujian sistem REST
 3. <strong>Uji Dengan Key:</strong> Tambahkan header <code>X-API-KEY</code> dengan nilai kunci rahasia <code>craftive-public-key-2026</code>. Klik <strong>Send</strong>. Server akan mengembalikan status <code>200 OK</code> beserta data seluruh produk.
 </p>
 
-<div style="display: flex; gap: 15px; justify-content: center; margin: 15px 0;">
-<div style="text-align: center; width: 48%;">
-<img src="public/images/reports/postman_auth_test.png" alt="Uji Login JWT" style="width: 100%; height: auto; border-radius: 4px; border: 1px solid #E2E8F0;">
-<div style="font-size: 8.5pt; font-style: italic; color: #666; margin-top: 3px;">Gambar 2.8: Penerbitan Token JWT</div>
-</div>
-<div style="text-align: center; width: 48%;">
-<img src="public/images/reports/postman_apikey_test.png" alt="Uji Proteksi API Key" style="width: 100%; height: auto; border-radius: 4px; border: 1px solid #E2E8F0;">
-<div style="font-size: 8.5pt; font-style: italic; color: #666; margin-top: 3px;">Gambar 2.9: Penolakan Tanpa API Key</div>
-</div>
-</div>
+<table style="width: 100%; border: none; margin: 10px 0; page-break-inside: avoid;">
+<tr style="background: none;">
+<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<img src="public/images/reports/postman_auth_test.png" alt="Uji Login JWT" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 4px; border: 1px solid #E2E8F0; margin: 0 auto;">
+<div style="font-size: 8.5pt; font-style: italic; color: #666; margin-top: 3px; text-align: center;">Gambar 2.8: Penerbitan Token JWT</div>
+</td>
+<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<img src="public/images/reports/postman_apikey_test.png" alt="Uji Proteksi API Key" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 4px; border: 1px solid #E2E8F0; margin: 0 auto;">
+<div style="font-size: 8.5pt; font-style: italic; color: #666; margin-top: 3px; text-align: center;">Gambar 2.9: Penolakan Tanpa API Key</div>
+</td>
+</tr>
+</table>
 
 <div class="page-footer">17</div>
 </div>
@@ -1060,16 +1068,18 @@ Berikut adalah panduan langkah demi langkah (step-by-step) pengujian sistem REST
 3. **Uji Role Perajin:** Gunakan token login perajin (role <code>seller</code>), lalu jalankan request kembali. Server akan memproses penambahan produk ke database dan memberikan respon status sukses <code>201 Created</code>.
 </p>
 
-<div style="display: flex; gap: 15px; justify-content: center; margin: 15px 0;">
-<div style="text-align: center; width: 48%;">
-<img src="public/images/reports/postman_basicauth_test.png" alt="Uji Basic Auth" style="width: 100%; height: auto; border-radius: 4px; border: 1px solid #E2E8F0;">
-<div style="font-size: 8.5pt; font-style: italic; color: #666; margin-top: 3px;">Gambar 2.10: HTTP Basic Profile</div>
-</div>
-<div style="text-align: center; width: 48%;">
-<img src="public/images/reports/postman_crud_test.png" alt="Uji CRUD Admin" style="width: 100%; height: auto; border-radius: 4px; border: 1px solid #E2E8F0;">
-<div style="font-size: 8.5pt; font-style: italic; color: #666; margin-top: 3px;">Gambar 2.11: Hak Akses CRUD Admin</div>
-</div>
-</div>
+<table style="width: 100%; border: none; margin: 10px 0; page-break-inside: avoid;">
+<tr style="background: none;">
+<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<img src="public/images/reports/postman_basicauth_test.png" alt="Uji Basic Auth" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 4px; border: 1px solid #E2E8F0; margin: 0 auto;">
+<div style="font-size: 8.5pt; font-style: italic; color: #666; margin-top: 3px; text-align: center;">Gambar 2.10: HTTP Basic Profile</div>
+</td>
+<td style="width: 50%; text-align: center; border: none; padding: 0 10px;">
+<img src="public/images/reports/postman_crud_test.png" alt="Uji CRUD Admin" style="max-width: 100%; height: auto; max-height: 8.5cm; border-radius: 4px; border: 1px solid #E2E8F0; margin: 0 auto;">
+<div style="font-size: 8.5pt; font-style: italic; color: #666; margin-top: 3px; text-align: center;">Gambar 2.11: Hak Akses CRUD Admin</div>
+</td>
+</tr>
+</table>
 
 <div class="page-footer">18</div>
 </div>

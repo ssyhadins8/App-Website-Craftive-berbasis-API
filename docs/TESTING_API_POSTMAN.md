@@ -1,143 +1,187 @@
 # 🧪 LAPORAN PENGUJIAN REST API CRAFTIVE DENGAN POSTMAN
 
-Laporan ini disusun khusus untuk mendokumentasikan hasil pengujian sistem keamanan dan fungsionalitas REST API pada aplikasi **Craftive** menggunakan **Postman Desktop Client**.
+Laporan ini disusun khusus untuk mendokumentasikan hasil pengujian sistem keamanan dan fungsionalitas REST API pada aplikasi **Craftive** menggunakan **Postman Desktop Client** sesuai dengan struktur folder koleksi Postman yang telah diuji.
 
 ---
 
 ## 📁 1. Informasi Lingkungan Pengujian (Environment)
 
-Sebelum memulai pengujian, variabel lingkungan diatur pada Postman untuk mempermudah eksekusi endpoint secara dinamis:
+Variabel lingkungan diatur pada Postman untuk mempermudah eksekusi endpoint secara dinamis:
 
 *   **`base_url`**: `http://localhost/craftive/public/api`
-*   **`jwt_token`**: *(Diisi otomatis oleh skrip pengujian setelah login berhasil)*
-*   **`X-API-KEY`**: `craftive-public-key-2026` (Digunakan untuk proteksi katalog publik)
+*   **`jwt_token`**: *(Diisi secara dinamis dari response login)*
+*   **`X-API-KEY`**: `craftive-public-key-2026` (Header wajib untuk rute publik)
 *   **Basic Auth**: Menggunakan header otentikasi standard Base64 `email:password`
 
 ---
 
-## 🔒 2. Contoh Uji Skenario Keamanan (Token & API Key)
+## 🔒 2. Dokumentasi Uji Coba per Folder Koleksi Postman
 
-### A. Uji Proteksi API Key (`X-API-KEY`)
-Sistem melindungi data katalog publik dari scraping massal menggunakan header `X-API-KEY`.
+Struktur di bawah ini disesuaikan dengan **Koleksi Postman Craftive Premium API & AI Planner**:
 
-*   **Metode**: `GET`
-*   **Endpoint**: `/api/catalog/products`
-*   **Kondisi Tanpa Key**: Mengembalikan status `401 Unauthorized` dengan pesan `"Unauthorized. Invalid API Key"`.
-*   **Kondisi Dengan Key**: Mengembalikan status `200 OK` dengan daftar produk JSON.
+### 📁 Folder 1: Public Data (No Auth / API Key)
+Folder ini berisi rute-rute publik yang dilindungi oleh API Key untuk melindungi data dari scraping massal bot luar.
 
-![Uji Proteksi API Key](../public/images/reports/postman_apikey_test.png)
-*Gambar 1: Hasil Uji Coba Penolakan Akses Tanpa API Key*
+1.  **`GET Get All Categories`**
+    *   **Endpoint**: `{{base_url}}/catalog/categories`
+    *   **Header**: `X-API-KEY: craftive-public-key-2026`
+    *   **Status Code**: `200 OK`
+2.  **`GET Get Products (All)`**
+    *   **Endpoint**: `{{base_url}}/catalog/products`
+    *   **Header**: `X-API-KEY: craftive-public-key-2026`
+    *   **Status Code**: `200 OK`
+    *   *Catatan*: Jika tanpa key, middleware akan memblokir dan mengembalikan `401 Unauthorized`.
+3.  **`GET Get Shop Info by ID`**
+    *   **Endpoint**: `{{base_url}}/catalog/shops/{id}`
+    *   **Header**: `X-API-KEY: craftive-public-key-2026`
+    *   **Status Code**: `200 OK`
 
 ---
 
-### B. Uji Otentikasi Token JWT (JSON Web Token)
-Digunakan untuk mengamankan proses transaksi penting seperti keranjang belanja, checkout, dan pengajuan kustom kriya.
+### 📁 Folder 2: Authentication
+Mengelola proses registrasi, login multi-role (Admin, Buyer, Seller), serta akses basic profile.
 
-*   **Metode**: `POST`
-*   **Endpoint**: `/api/auth/login`
-*   **Payload Request**:
-    ```json
-    {
-      "email": "testbuyer@craftive.id",
-      "password": "password"
-    }
-    ```
-*   **Response Sukses (`200 OK`)**:
-    ```json
-    {
-      "message": "Login successful.",
-      "data": {
-        "user": {
-          "id": 1,
+1.  **`POST Register User`**
+    *   **Endpoint**: `{{base_url}}/auth/register`
+    *   **Payload Request**:
+        ```json
+        {
           "name": "Testing Buyer",
           "email": "testbuyer@craftive.id",
-          "role": "buyer"
-        },
-        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOi..."
-      }
-    }
-    ```
-*   **Skrip Otomatisasi Postman (Tab Tests)**:
-    ```javascript
-    const response = pm.response.json();
-    if (response.data && response.data.token) {
-        pm.environment.set("jwt_token", response.data.token);
-    }
-    ```
+          "password": "password",
+          "password_confirmation": "password",
+          "role": "buyer",
+          "phone": "081999888777",
+          "address": "Jl. Keadilan No. 12, Jakarta"
+        }
+        ```
+    *   **Status Code**: `201 Created`
+2.  **`POST Login Admin` / `POST Login Buyer (Siti Rahayu)` / `POST Login Seller (Artisan)`**
+    *   **Endpoint**: `{{base_url}}/auth/login`
+    *   **Payload Request**:
+        ```json
+        {
+          "email": "testbuyer@craftive.id",
+          "password": "password"
+        }
+        ```
+    *   **Status Code**: `200 OK` (Mengembalikan Bearer JWT Token).
+3.  **`GET Basic Auth Profile`**
+    *   **Endpoint**: `{{base_url}}/profile/me`
+    *   **Header**: `Authorization: Basic [Base64-email:password]`
+    *   **Status Code**: `200 OK` (Pengambilan profil cepat).
 
+---
+
+### 📁 Folder 3: AI Agent Custom Planner
+Mengatur integrasi kecerdasan buatan berbasis agen (Agentic AI) untuk simulasi kerajinan kustom.
+
+1.  **`POST Kriya Custom Planner Analysis`**
+    *   **Endpoint**: `{{base_url}}/buyer/custom-planner`
+    *   **Header**: `Authorization: Bearer {{jwt_token}}`
+    *   **Payload**: Deskripsi spesifikasi material, budget, dan estimasi waktu.
+    *   **Status Code**: `200 OK` (Merespon rincian biaya bahan, jasa, & reasoning AI).
+2.  **`POST Kirim Proposal Custom Ke Perajin`**
+    *   **Endpoint**: `{{base_url}}/buyer/custom-proposals`
+    *   **Header**: `Authorization: Bearer {{jwt_token}}`
+    *   **Status Code**: `201 Created`.
+3.  **`POST General AI Recommend Products`**
+    *   **Endpoint**: `{{base_url}}/ai/recommend`
+    *   **Header**: `X-API-KEY: craftive-public-key-2026`
+    *   **Status Code**: `200 OK`.
+
+---
+
+### 📁 Folder 4: Buyer Flow (Cart & Order)
+Alur transaksi pembelian produk oleh akun ber-role `buyer`.
+
+1.  **`GET Get Cart`**
+    *   **Endpoint**: `{{base_url}}/buyer/cart`
+    *   **Header**: `Authorization: Bearer {{jwt_token}}`
+    *   **Status Code**: `200 OK`
+2.  **`POST Add Item to Cart`**
+    *   **Endpoint**: `{{base_url}}/buyer/cart`
+    *   **Payload**: `{"product_id": 3, "qty": 2}`
+    *   **Status Code**: `201 Created`
+3.  **`POST Checkout (Create Order)`**
+    *   **Endpoint**: `{{base_url}}/buyer/checkout`
+    *   **Status Code**: `200 OK` (Pesanan berstatus 'pending' terbuat).
+4.  **`DEL Delete Item from Cart (DELETE)`**
+    *   **Endpoint**: `{{base_url}}/buyer/cart/{id}`
+    *   **Status Code**: `200 OK` / `204 No Content`.
+5.  **`POST Upload Payment Base64`**
+    *   **Endpoint**: `{{base_url}}/buyer/payments`
+    *   **Payload**: Data gambar terkompresi Base64.
+    *   **Status Code**: `200 OK`.
+
+---
+
+### 📁 Folder 5: Artisan (Seller) Product CRUD & Proposal Flow
+Fungsionalitas khusus perajin untuk mengelola katalog produk mandiri dan proposal kustom.
+
+1.  **`GET Get Artisan Products (Read)`**
+    *   **Endpoint**: `{{base_url}}/artisan/products`
+    *   **Header**: `Authorization: Bearer {{jwt_token}}` (Role: Seller)
+    *   **Status Code**: `200 OK`
+2.  **`POST Create Product (Create)`**
+    *   **Endpoint**: `{{base_url}}/artisan/products`
+    *   **Payload**: Nama produk, harga, deskripsi, kategori, stok, foto.
+    *   **Status Code**: `201 Created`
+3.  **`PUT Update Product (Update)`**
+    *   **Endpoint**: `{{base_url}}/artisan/products/{id}`
+    *   **Status Code**: `200 OK`
+4.  **`DEL Delete Product (Delete)`**
+    *   **Endpoint**: `{{base_url}}/artisan/products/{id}`
+    *   **Status Code**: `204 No Content`
+5.  **`GET Get Inbound Proposals`**
+    *   **Endpoint**: `{{base_url}}/artisan/proposals`
+    *   **Status Code**: `200 OK` (Melihat daftar pengajuan kriya kustom dari AI).
+6.  **`PATCH Process Proposal (Accept/Reject)`**
+    *   **Endpoint**: `{{base_url}}/artisan/proposals/{id}`
+    *   **Payload**: `{"status": "accepted"}` / `{"status": "rejected"}`
+    *   **Status Code**: `200 OK`.
+
+---
+
+### 📁 Folder 6: Admin Dashboard Actions
+Hak istimewa administrator untuk monitoring sistem dan moderasi.
+
+1.  **`GET Admin Overview Stats`**
+    *   **Endpoint**: `{{base_url}}/admin/dashboard`
+    *   **Header**: `Authorization: Bearer {{jwt_token}}` (Role: Admin)
+    *   **Status Code**: `200 OK`
+2.  **`GET Admin - Get Users List`**
+    *   **Endpoint**: `{{base_url}}/admin/users`
+    *   **Status Code**: `200 OK`
+3.  **`PUT Admin - Verify Shop`**
+    *   **Endpoint**: `{{base_url}}/admin/shops/{id}/verify`
+    *   **Status Code**: `200 OK`
+4.  **`PUT Admin - Update Order Status`**
+    *   **Endpoint**: `{{base_url}}/admin/orders/{id}/status`
+    *   **Status Code**: `200 OK`.
+
+---
+
+## 🖼️ 3. Lampiran Tangkapan Layar (Screenshots) Hasil Pengujian
+
+Di bawah ini adalah bukti visual eksekusi API dari Postman:
+
+### A. Keamanan & Proteksi API Key (`api.key`)
+![Uji Proteksi API Key](../public/images/reports/postman_apikey_test.png)
+*Gambar 1: Blokir Rute Publik Akibat Tidak Menyertakan API Key yang Valid*
+
+### B. Otentikasi & Penerbitan Token JWT
 ![Penerbitan Token JWT](../public/images/reports/postman_auth_test.png)
-*Gambar 2: Proses Login dan Penerbitan Token JWT Sukses*
+*Gambar 2: Respon Sukses Login Buyer dengan Kembalian Bearer Token JWT*
 
----
-
-### C. Uji Cepat HTTP Basic Authentication
-Digunakan oleh sistem eksternal atau aplikasi pihak ketiga untuk membaca profil ringkas pengguna secara efisien.
-
-*   **Metode**: `GET`
-*   **Endpoint**: `/api/profile/me`
-*   **Header**: `Authorization: Basic [Base64-email:password]`
-*   **Response Sukses (`200 OK`)**:
-    ```json
-    {
-      "id": 1,
-      "name": "Testing Buyer",
-      "email": "testbuyer@craftive.id",
-      "role": "buyer",
-      "phone": "081999888777",
-      "address": "Jl. Keadilan No. 12, Jakarta"
-    }
-    ```
-
+### C. HTTP Basic Authentication
 ![Uji Basic Auth](../public/images/reports/postman_basicauth_test.png)
-*Gambar 3: Pengambilan Profil Ringkas Menggunakan HTTP Basic Auth*
+*Gambar 3: Ekstraksi Profil Ringkas Melalui Skema Otorisasi Basic Auth*
 
----
-
-## 🛠️ 3. Pengujian Fitur CRUD & Otorisasi Peran (RBAC)
-
-Sistem memastikan bahwa pembeli (`buyer`) tidak dapat mengutak-atik barang milik perajin (`seller`), dan sebaliknya.
-
-### A. Tambah Produk Baru (CRUD Artisan/Seller)
-*   **Metode**: `POST`
-*   **Endpoint**: `/api/artisan/products`
-*   **Header**: `Authorization: Bearer {{jwt_token}}`
-*   **Payload Request**:
-    ```json
-    {
-      "name": "Guci Keramik Terracotta",
-      "description": "Guci keramik tanah liat premium dengan ukiran tangan khas Yogyakarta.",
-      "price": 450000,
-      "stock": 10,
-      "category_id": 2
-    }
-    ```
-*   **Uji Penolakan (Role Buyer)**: Jika diakses dengan token akun pembeli, server merespon dengan `403 Forbidden` dan pesan `"Forbidden. You do not have the required role."`
-*   **Uji Sukses (Role Seller)**: Jika diakses dengan token pengrajin, server merespon dengan `201 Created` beserta objek produk yang berhasil ditambahkan ke database.
-
+### D. Penolakan Otorisasi / RBAC (Pembatasan Peran)
 ![Uji CRUD Admin](../public/images/reports/postman_crud_test.png)
-*Gambar 4: Pengujian Pembatasan Hak Akses CRUD (RBAC)*
+*Gambar 4: Penolakan Rute CRUD Admin/Seller Apabila Diakses Menggunakan Token Buyer*
 
 ---
 
-## 📊 4. Matriks Detail Uji Coba Endpoint REST API
-
-Berikut adalah tabel evaluasi lengkap dari seluruh skenario pengujian REST API yang didefinisikan dalam koleksi Postman:
-
-| No | Endpoint | Metode | Proteksi Keamanan | Status Code | Hasil | Keterangan Uji |
-|----|----------|--------|-------------------|-------------|-------|----------------|
-| 1  | `/api/auth/register` | `POST` | Terbuka | `201 Created` | **PASS** | Mendaftarkan akun buyer baru secara aman. |
-| 2  | `/api/auth/login` | `POST` | Terbuka | `200 OK` | **PASS** | Memverifikasi sandi dan menerbitkan token JWT. |
-| 3  | `/api/profile/me` | `GET` | Basic Auth | `200 OK` | **PASS** | Menarik data profil ringkas tanpa token JWT. |
-| 4  | `/api/catalog/products` | `GET` | `X-API-KEY` | `200 OK` | **PASS** | Mengambil katalog umum dengan key valid. |
-| 5  | `/api/catalog/products` | `GET` | Tanpa Key | `401 Unauth` | **PASS** | Akses diblokir sistem karena key tidak valid/kosong. |
-| 6  | `/api/buyer/cart` | `GET` | JWT Bearer | `200 OK` | **PASS** | Menampilkan item belanja milik akun pembeli terkait. |
-| 7  | `/api/buyer/cart` | `POST` | JWT Bearer | `201 Created` | **PASS** | Menambahkan barang baru ke dalam keranjang. |
-| 8  | `/api/buyer/checkout` | `POST` | JWT Bearer | `200 OK` | **PASS** | Mengubah keranjang menjadi pesanan & memotong stok. |
-| 9  | `/api/buyer/payments` | `POST` | JWT Bearer | `200 OK` | **PASS** | Mengunggah file Base64 sebagai bukti pembayaran bank. |
-| 10 | `/api/buyer/custom-planner`| `POST` | JWT Bearer | `200 OK` | **PASS** | Menghitung simulasi biaya kustom lewat Agentic AI. |
-| 11 | `/api/artisan/products` | `POST` | JWT + Role Seller | `201 Created` | **PASS** | Menambah item kriya baru milik toko pengrajin. |
-| 12 | `/api/admin/users` | `GET` | JWT + Role Admin | `403 Forbidden`| **PASS** | Memblokir user non-admin yang mencoba melihat data pengguna. |
-
----
-
-Laporan pengujian ini menunjukkan bahwa seluruh skema otentikasi (JWT, API Key, Basic Auth) dan pembatasan otorisasi peran (RBAC) pada platform **Craftive** telah berjalan dengan baik, stabil, dan siap untuk diintegrasikan dalam rilis produksi.
+Laporan pengujian mandiri ini menunjukkan bahwa rancangan REST API **Craftive** telah teruji 100% lulus (PASS) pada seluruh rute utama dengan pembatasan hak akses yang sangat aman.

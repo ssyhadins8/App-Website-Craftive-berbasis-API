@@ -1,59 +1,112 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏺 Craftive - Premium Handmade Goods Marketplace & REST API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[![Laravel Version](https://img.shields.io/badge/Laravel-v12.0-red?style=flat-square&logo=laravel)](https://laravel.com)
+[![PHP Version](https://img.shields.io/badge/PHP-%5E8.2-blue?style=flat-square&logo=php)](https://php.net)
+[![JWT Auth](https://img.shields.io/badge/JWT--Auth-v2.3-orange?style=flat-square&logo=json-web-tokens)](https://github.com/tymon/jwt-auth)
+[![Swagger](https://img.shields.io/badge/OpenAPI-3.0-green?style=flat-square&logo=swagger)](https://swagger.io)
+[![Postman](https://img.shields.io/badge/Postman-Tested-orange?style=flat-square&logo=postman)](https://postman.com)
 
-## About Laravel
+**Craftive** adalah platform marketplace berbasis website dan REST API yang dikhususkan untuk produk kriya premium buatan tangan seniman lokal Indonesia. Aplikasi ini dikembangkan untuk memenuhi tugas proyek kelompok **Ujian Akhir Semester (UAS) Pemrograman API**.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Platform ini dilengkapi dengan fitur unggulan **Agentic AI Custom Planner** yang bertindak sebagai asisten kalkulasi biaya dan negosiasi dinamis untuk kerajinan kustom secara transparan.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🎓 Informasi Akademik
+*   **Mata Kuliah:** Pemrograman API
+*   **Program Studi:** D4 Manajemen Informatika, Jurusan Teknik Informatika
+*   **Fakultas:** Vokasi, Universitas Negeri Surabaya (UNESA)
+*   **Tahun Akademik:** Genap 2025/2026
+*   **Dosen Pengampu:** M Adamu Islam Mashuri, S.Tr.T., M.Tr.Kom (Pak Adam)
+*   **Disusun Oleh:** Selvi Adinda H. (NIM: **24091397145**)
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## ✨ Fitur-Fitur Utama Platform
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1.  **Katalog Produk Kriya:** Menampilkan produk kerajinan tangan lokal yang terbagi berdasarkan kategori material, asal sanggar, tingkat rating ulasan, dan gaya desain (estetika).
+2.  **Sistem Keranjang & Checkout (Multi-Seller Cart Routing):** Mendukung pembelian produk kriya dari berbagai sanggar perajin sekaligus dalam satu transaksi, dengan sistem pemotongan stok aman.
+3.  **Strict Order Workflow & Payment:** Alur pembayaran aman di mana pembeli dapat mengunggah bukti transfer bank digital dalam format string Base64 untuk divalidasi oleh Administrator.
+4.  **Agentic AI Custom Planner (Fitur Unggulan):** Simulasi AI dinamis untuk menganalisis spesifikasi kriya buatan tangan guna menerbitkan estimasi detail biaya bahan baku, biaya jasa tukang, durasi pengerjaan, tingkat kesulitan, serta rekomendasi sanggar yang ideal.
+5.  **Relasi Sistem Custom Proposal:** Pembeli dapat mengirimkan proposal resmi hasil perencanaan AI ke perajin. Jika disetujui oleh perajin, sistem akan membuat entri transaksi pesanan baru secara otomatis di database.
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🔒 Arsitektur Keamanan & Otorisasi API
 
-### Premium Partners
+Sistem REST API dirancang kokoh menggunakan perlindungan keamanan tiga lapis:
+1.  **API Key Statis (`X-API-KEY`):** Melindungi katalog umum (`GET /api/catalog/products`) dari aktivitas scraping data massal oleh bot luar.
+2.  **HTTP Basic Authentication:** Autentikasi cepat terenkripsi Base64 untuk membaca data profil dasar secara reaktif (`GET /api/profile/me`).
+3.  **JSON Web Token (JWT) Bearer Token:** Autentikasi *stateless* menggunakan tanda tangan kunci rahasia untuk mengamankan seluruh rute transaksi sensitif (keranjang, checkout, dashboard, dan persetujuan proposal).
+4.  **Role-Based Access Control (RBAC):** Middleware khusus untuk menyaring hak akses rute berdasarkan peran pengguna (`buyer`, `seller`, dan `admin`).
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## 🛠️ Panduan Instalasi & Setup Proyek
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Ikuti langkah-langkah di bawah ini untuk menjalankan proyek di lingkungan lokal (XAMPP):
 
-## Code of Conduct
+### 1. Prasyarat System
+*   PHP >= 8.2
+*   Composer
+*   MySQL (melalui XAMPP)
+*   Node.js (LTS) & NPM
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 2. Langkah Instalasi
+Clone atau download repositori ini ke folder server lokal kamu (misal: `C:/xampp/htdocs/craftive`):
 
-## Security Vulnerabilities
+```bash
+# 1. Masuk ke folder proyek
+cd craftive
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# 2. Instalasi package composer (PHP) & NPM (JavaScript)
+composer install
+npm install
 
-## License
+# 3. Salin berkas lingkungan (.env)
+copy .env.example .env
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# 4. Generate key aplikasi utama & kunci rahasia JWT
+php artisan key:generate
+php artisan jwt:secret
+
+# 5. Konfigurasi database di file .env Anda:
+# DB_DATABASE=craftive
+# DB_USERNAME=root
+# DB_PASSWORD=
+
+# 6. Jalankan migrasi tabel database beserta data awal (Seeding)
+php artisan migrate --seed
+
+# 7. Jalankan server lokal Laravel
+php artisan serve
+```
+
+API sekarang berjalan dan dapat diakses pada alamat: **`http://127.0.0.1:8000/api`**
+
+---
+
+## 🌐 Dokumentasi API Interaktif (Swagger UI)
+
+Proyek ini telah dilengkapi dengan dokumentasi interaktif **Swagger UI** (OpenAPI Specification 3.0) untuk memudahkan eksplorasi dan pengujian live endpoint tanpa perlu membuka Postman.
+
+*   **URL Dokumentasi:** [http://localhost/craftive/public/api/documentation](http://localhost/craftive/public/api/documentation)  
+    *(Atau jika menggunakan `artisan serve`: [http://127.0.0.1:8000/api/documentation](http://127.0.0.1:8000/api/documentation))*
+*   **URL Akses Cepat:** `/docs` (akan dialihkan otomatis).
+
+Kamu dapat melakukan otorisasi menggunakan tombol **Authorize** di halaman tersebut lalu menguji seluruh skenario API secara langsung menggunakan tombol **Try it out**.
+
+---
+
+## 📬 Pengujian API dengan Postman
+
+Berkas koleksi Postman sudah tersedia di dalam repositori ini:
+*   **File Koleksi:** `Craftive_API_Postman_Collection.json` (berada di root folder proyek).
+*   **Cara Pakai:** Buka Postman -> Klik **Import** -> Pilih file tersebut -> Buat Environment dengan variabel `base_url` bernilai `http://127.0.0.1:8000/api` -> Jalankan pengujian secara berurutan.
+
+---
+
+## 📄 Berkas Laporan & Panduan Ujian
+Seluruh laporan tugas akhir dan cheat sheet ujian telah dicetak ke berkas PDF berikut:
+*   📘 **Laporan Tugas Akhir UAS:** [LAPORAN_UAS.pdf](LAPORAN_UAS.pdf)
+*   🎓 **Panduan Uji & Q&A Demo API:** [PANDUAN_DEMO_API.pdf](PANDUAN_DEMO_API.pdf)

@@ -1,0 +1,485 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Craftive REST API Documentation",
+    "description": "Dokumentasi interaktif REST API Craftive - Premium Handmade Goods Marketplace dengan integrasi Agentic AI Custom Planner. Dikembangkan sebagai Tugas Akhir Pemrograman API - Universitas Negeri Surabaya (UNESA) 2026.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/craftive/public/api",
+      "description": "Server Lokal XAMPP"
+    },
+    {
+      "url": "http://127.0.0.1:8000/api",
+      "description": "Server PHP Artisan Serve"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-KEY",
+        "description": "Kunci API statis untuk melindungi katalog umum. Gunakan nilai: `craftive-public-key-2026`"
+      },
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "Autentikasi HTTP Basic Auth cepat menggunakan kredensial email & password (Base64)."
+      },
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Otorisasi transaksional menggunakan JSON Web Token (JWT) yang diterbitkan setelah login."
+      }
+    }
+  },
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Autentikasi"],
+        "summary": "Registrasi Akun Baru",
+        "description": "Mendaftarkan pembeli (buyer) atau perajin (seller) baru ke sistem.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email", "password", "password_confirmation", "role"],
+                "properties": {
+                  "name": { "type": "string", "example": "Siti Rahayu" },
+                  "email": { "type": "string", "format": "email", "example": "siti@craftive.id" },
+                  "password": { "type": "string", "format": "password", "example": "password" },
+                  "password_confirmation": { "type": "string", "format": "password", "example": "password" },
+                  "role": { "type": "string", "enum": ["buyer", "seller"], "example": "buyer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Registrasi Berhasil",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": { "type": "object" },
+                    "token": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Kesalahan Validasi Data Input"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Autentikasi"],
+        "summary": "Login Akun & Pengambilan Token JWT",
+        "description": "Memverifikasi kredensial pengguna dan menerbitkan JWT Bearer Token.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string", "format": "email", "example": "siti@craftive.id" },
+                  "password": { "type": "string", "format": "password", "example": "password" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login Berhasil, Token Diterbitkan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": { "type": "string" },
+                    "token_type": { "type": "string", "example": "bearer" },
+                    "expires_in": { "type": "integer", "example": 3600 },
+                    "user": { "type": "object" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Kredensial Salah / Email & Password Tidak Cocok"
+          }
+        }
+      }
+    },
+    "/profile/me": {
+      "get": {
+        "tags": ["Profil"],
+        "summary": "Ambil Data Profil Pribadi (HTTP Basic Auth)",
+        "description": "Membaca data user terotentikasi secara cepat menggunakan otentikasi Basic Auth.",
+        "security": [{ "BasicAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Basic Auth Berhasil",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": { "type": "string", "example": "Basic Auth Berhasil!" },
+                    "user": { "type": "object" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Basic Auth Gagal / Kredensial Tidak Sah"
+          }
+        }
+      }
+    },
+    "/catalog/products": {
+      "get": {
+        "tags": ["Katalog Publik"],
+        "summary": "Ambil Seluruh Produk Katalog",
+        "description": "Menampilkan daftar seluruh produk kriya aktif di katalog umum. Dilindungi API Key.",
+        "security": [{ "ApiKeyAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Data Produk Berhasil Diambil",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API Key Tidak Valid atau Kosong"
+          }
+        }
+      }
+    },
+    "/catalog/products/{id}": {
+      "get": {
+        "tags": ["Katalog Publik"],
+        "summary": "Ambil Detail Produk Berdasarkan ID",
+        "description": "Menampilkan informasi spesifik dari sebuah produk di katalog. Dilindungi API Key.",
+        "security": [{ "ApiKeyAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detail Produk Ditemukan"
+          },
+          "404": {
+            "description": "Produk Tidak Ditemukan"
+          }
+        }
+      }
+    },
+    "/buyer/custom-planner": {
+      "post": {
+        "tags": ["AI Custom Planner"],
+        "summary": "Simulasi Desain Kriya Kustom",
+        "description": "Menganalisis spesifikasi kriya buatan tangan pembeli untuk menghasilkan kalkulasi estimasi biaya bahan, jasa perajin, durasi pengerjaan, serta rekomendasi sanggar yang ideal.",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["specifications", "materials", "budget", "timeline"],
+                "properties": {
+                  "specifications": { "type": "string", "example": "Meja kayu jati ukiran relief mega mendung ukuran 120x60 cm" },
+                  "materials": { "type": "string", "example": "Kayu Jati tua, pelitur cokelat gelap, lem epoxy" },
+                  "budget": { "type": "number", "example": 1500000 },
+                  "timeline": { "type": "integer", "example": 14 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Hasil Analisis AI Berhasil Diterbitkan"
+          }
+        }
+      }
+    },
+    "/custom-proposals": {
+      "post": {
+        "tags": ["AI Custom Planner"],
+        "summary": "Kirim Proposal Custom Kriya ke Perajin",
+        "description": "Mengajukan proposal kriya kustom resmi berdasarkan analisis AI ke sanggar perajin terkait.",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["craft_type", "material", "budget", "deadline_days", "description", "difficulty", "estimated_days", "material_cost", "labor_cost", "shop_recommendation"],
+                "properties": {
+                  "craft_type": { "type": "string", "example": "Meja Jati Ukir" },
+                  "material": { "type": "string", "example": "Kayu Jati, Pelitur" },
+                  "budget": { "type": "number", "example": 1500000 },
+                  "deadline_days": { "type": "integer", "example": 14 },
+                  "description": { "type": "string", "example": "Meja kayu jati ukiran relief mega mendung" },
+                  "difficulty": { "type": "string", "example": "Sangat Rumit" },
+                  "estimated_days": { "type": "integer", "example": 13 },
+                  "material_cost": { "type": "number", "example": 525000 },
+                  "labor_cost": { "type": "number", "example": 675000 },
+                  "shop_recommendation": { "type": "string", "example": "Studio Ukir Jati Abadi" },
+                  "agent_reasoning": { "type": "string", "example": "Analisis AI menyatakan layak." }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Proposal Berhasil Dikirimkan"
+          }
+        }
+      }
+    },
+    "/artisan/proposals/{id}": {
+      "patch": {
+        "tags": ["Menu Perajin (Seller)"],
+        "summary": "Persetujuan / Penolakan Proposal Custom oleh Perajin",
+        "description": "Mengubah status proposal kustom. Jika status diubah menjadi 'accepted', sistem secara otomatis akan membuat pesanan pembelian baru (order & order_items) serta mendaftarkan produk kustom dinamis di database.",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 5
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["status"],
+                "properties": {
+                  "status": { "type": "string", "enum": ["accepted", "rejected"], "example": "accepted" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Status Proposal Berhasil Diperbarui & Transaksi Terbentuk"
+          }
+        }
+      }
+    },
+    "/buyer/cart": {
+      "get": {
+        "tags": ["Menu Pembeli (Buyer)"],
+        "summary": "Ambil Daftar Keranjang Belanja Pembeli",
+        "description": "Menampilkan seluruh item produk kriya yang dimasukkan ke dalam keranjang pembeli.",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Keranjang Berhasil Diambil"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Menu Pembeli (Buyer)"],
+        "summary": "Tambah Barang ke Keranjang Belanja",
+        "description": "Menambahkan produk dari katalog ke keranjang belanja pembeli.",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["product_id", "qty"],
+                "properties": {
+                  "product_id": { "type": "integer", "example": 1 },
+                  "qty": { "type": "integer", "example": 2 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Produk Berhasil Ditambahkan ke Keranjang"
+          }
+        }
+      }
+    },
+    "/buyer/checkout": {
+      "post": {
+        "tags": ["Menu Pembeli (Buyer)"],
+        "summary": "Checkout Keranjang Belanja",
+        "description": "Membuat pesanan pembelian baru (order) berdasarkan semua item yang berada di keranjang belanja pembeli. Stok barang otomatis dipotong.",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["shipping_address"],
+                "properties": {
+                  "shipping_address": { "type": "string", "example": "Jl. Ketintang No. 156, Gayungan, Surabaya" },
+                  "notes": { "type": "string", "example": "Tolong dibungkus bubble wrap yang tebal." }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Checkout Berhasil & Pesanan Terbentuk"
+          }
+        }
+      }
+    },
+    "/buyer/payments": {
+      "post": {
+        "tags": ["Menu Pembeli (Buyer)"],
+        "summary": "Unggah Bukti Transfer Pembayaran (Base64)",
+        "description": "Mengirim bukti transaksi bank berupa string terenkripsi Base64 untuk memproses pesanan.",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["order_id", "proof_image"],
+                "properties": {
+                  "order_id": { "type": "integer", "example": 4 },
+                  "proof_image": { "type": "string", "example": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAE..." }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Bukti Bayar Berhasil Diunggah"
+          }
+        }
+      }
+    },
+    "/artisan/products": {
+      "get": {
+        "tags": ["Menu Perajin (Seller)"],
+        "summary": "Daftar Produk Kriya Sanggar Perajin",
+        "description": "Menampilkan seluruh produk kriya yang dijual oleh sanggar perajin yang terotentikasi.",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Daftar Produk Berhasil Diambil"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Menu Perajin (Seller)"],
+        "summary": "Tambah Produk Baru ke Sanggar",
+        "description": "Mendaftarkan barang kriya baru ke database toko.",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["category_id", "name", "price", "stock", "style"],
+                "properties": {
+                  "category_id": { "type": "integer", "example": 1 },
+                  "name": { "type": "string", "example": "Mangkuk Tanah Liat Kasongan" },
+                  "description": { "type": "string", "example": "Mangkuk tanah liat buatan tangan tradisional dengan finishing alami." },
+                  "price": { "type": "number", "example": 45000 },
+                  "stock": { "type": "integer", "example": 25 },
+                  "style": { "type": "string", "example": "Bohemian" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Produk Kriya Baru Berhasil Dibuat"
+          }
+        }
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "tags": ["Menu Admin"],
+        "summary": "Ambil Seluruh Pengguna Platform (Otorisasi RBAC)",
+        "description": "Menampilkan list seluruh user terdaftar. Khusus untuk administrator (role: admin). Digunakan untuk mendemonstrasikan proteksi filter peran.",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Data Pengguna Berhasil Ditarik"
+          },
+          "403": {
+            "description": "Akses Ditolak Karena Peran Bukan Admin"
+          }
+        }
+      }
+    },
+    "/admin/products/{id}/approve": {
+      "patch": {
+        "tags": ["Menu Admin"],
+        "summary": "Persetujuan Publikasi Produk Kriya Baru",
+        "description": "Menyetujui produk buatan perajin baru agar status is_active aktif dan dapat dilihat di katalog umum.",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 15
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status Publikasi Produk Berhasil Disetujui"
+          }
+        }
+      }
+    }
+  }
+}

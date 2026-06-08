@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ERD Craftive</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #fff; font-family: 'Inter', sans-serif; }
+#canvas {
+  position: relative;
+  width: 2600px;
+  height: 1750px;
+  background: #fff;
+  overflow: hidden;
+}
+#svg-layer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+.erd-title {
+  position: absolute;
+  top: 15px; left: 0; right: 0;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a2e;
+  z-index: 2;
+}
+.erd-subtitle {
+  position: absolute;
+  top: 48px; left: 0; right: 0;
+  text-align: center;
+  font-size: 13px;
+  color: #6b7280;
+  z-index: 2;
+}
+
+/* Table card */
+.tbl {
+  position: absolute;
+  background: #fff;
+  border: 2px solid #d1d5db;
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 1;
+  min-width: 215px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+.tbl-head {
+  padding: 8px 14px;
+  font-weight: 700;
+  font-size: 13px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tbl ul { list-style: none; padding: 0; }
+.tbl li {
+  display: flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  gap: 6px;
+}
+.tbl li:last-child { border-bottom: none; }
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px; height: 18px;
+  border-radius: 3px;
+  font-size: 8px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.b-pk { background:#fef3c7; color:#d97706; border:1px solid #fcd34d; }
+.b-fk { background:#dbeafe; color:#2563eb; border:1px solid #93c5fd; }
+.b-c  { background:#f1f5f9; color:#94a3b8; border:1px solid #e2e8f0; }
+.n-pk { color:#b45309; font-weight:600; }
+.n-fk { color:#1d4ed8; font-weight:600; }
+.n-c  { color:#475569; }
+.t-type { color:#94a3b8; font-size:10px; margin-left:auto; }
+
+/* Header colors */
+.h-users { background: linear-gradient(135deg,#6366f1,#8b5cf6); }
+.h-shops { background: linear-gradient(135deg,#f59e0b,#d97706); }
+.h-categories { background: linear-gradient(135deg,#10b981,#059669); }
+.h-products { background: linear-gradient(135deg,#ef4444,#dc2626); }
+.h-carts { background: linear-gradient(135deg,#3b82f6,#2563eb); }
+.h-orders { background: linear-gradient(135deg,#ec4899,#db2777); }
+.h-order_items { background: linear-gradient(135deg,#f472b6,#e11d48); }
+.h-payments { background: linear-gradient(135deg,#14b8a6,#0d9488); }
+.h-reviews { background: linear-gradient(135deg,#a855f7,#9333ea); }
+.h-wishlists { background: linear-gradient(135deg,#f97316,#ea580c); }
+.h-ai { background: linear-gradient(135deg,#06b6d4,#0891b2); }
+.h-proposals { background: linear-gradient(135deg,#8b5cf6,#7c3aed); }
+
+/* Legend */
+.legend-box {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  z-index: 2;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 12px;
+  color: #475569;
+}
+.legend-box .badge { margin-right: 4px; }
+.legend-line {
+  display: inline-block;
+  width: 40px;
+  height: 3px;
+  border-radius: 2px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.card-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: #64748b;
+  padding: 3px 12px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  font-family: 'JetBrains Mono', monospace;
+}
+</style>
+</head>
+<body>
+<div id="canvas">
+  <div class="erd-title">Entity Relationship Diagram (ERD)</div>
+  <div class="erd-subtitle">Craftive — Premium Handcraft Marketplace • 11 Entitas • MySQL / MariaDB</div>
+
+  <svg id="svg-layer"></svg>
+
+  <!-- ====== USERS (top center) ====== -->
+  <div class="tbl" id="t-users" style="left:1080px; top:85px; width:245px;">
+    <div class="tbl-head h-users">👤 users</div>
+    <ul>
+      <li><span class="badge b-pk">PK</span><span class="n-pk">id</span><span class="t-type">BIGINT AI</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">name</span><span class="t-type">VARCHAR</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">email</span><span class="t-type">VARCHAR UQ</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">password</span><span class="t-type">VARCHAR</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">role</span><span class="t-type">ENUM</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">phone</span><span class="t-type">VARCHAR NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">avatar</span><span class="t-type">LONGTEXT NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">address</span><span class="t-type">TEXT NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">is_active</span><span class="t-type">BOOLEAN</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">email_verified_at</span><span class="t-type">TIMESTAMP</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">remember_token</span><span class="t-type">VARCHAR</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">timestamps</span><span class="t-type">TIMESTAMP</span></li>
+    </ul>
+  </div>
+
+  <!-- ====== SHOPS ====== -->
+  <div class="tbl" id="t-shops" style="left:130px; top:420px; width:230px;">
+    <div class="tbl-head h-shops">🏪 shops</div>
+    <ul>
+      <li><span class="badge b-pk">PK</span><span class="n-pk">id</span><span class="t-type">BIGINT AI</span></li>
+      <li id="fk-shops-user"><span class="badge b-fk">FK</span><span class="n-fk">user_id</span><span class="t-type">→ users</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">name</span><span class="t-type">VARCHAR</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">description</span><span class="t-type">TEXT NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">logo</span><span class="t-type">VARCHAR NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">cover_image</span><span class="t-type">VARCHAR NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">address</span><span class="t-type">TEXT NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">is_verified</span><span class="t-type">BOOLEAN</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">timestamps</span><span class="t-type">TIMESTAMP</span></li>
+    </ul>
+  </div>
+
+  <!-- ====== CATEGORIES ====== -->
+  <div class="tbl" id="t-categories" style="left:30px; top:830px; width:210px;">
+    <div class="tbl-head h-categories">📂 categories</div>
+    <ul>
+      <li><span class="badge b-pk">PK</span><span class="n-pk">id</span><span class="t-type">BIGINT AI</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">name</span><span class="t-type">VARCHAR</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">icon</span><span class="t-type">VARCHAR NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">description</span><span class="t-type">TEXT NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">timestamps</span><span class="t-type">TIMESTAMP</span></li>
+    </ul>
+  </div>
+
+  <!-- ====== PRODUCTS ====== -->
+  <div class="tbl" id="t-products" style="left:280px; top:830px; width:240px;">
+    <div class="tbl-head h-products">🎨 products</div>
+    <ul>
+      <li><span class="badge b-pk">PK</span><span class="n-pk">id</span><span class="t-type">BIGINT AI</span></li>
+      <li id="fk-products-shop"><span class="badge b-fk">FK</span><span class="n-fk">shop_id</span><span class="t-type">→ shops</span></li>
+      <li id="fk-products-cat"><span class="badge b-fk">FK</span><span class="n-fk">category_id</span><span class="t-type">→ categories</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">name</span><span class="t-type">VARCHAR</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">description</span><span class="t-type">TEXT</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">price</span><span class="t-type">DECIMAL(15,2)</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">stock</span><span class="t-type">INT</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">weight</span><span class="t-type">INT NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">images</span><span class="t-type">JSON NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">tags</span><span class="t-type">JSON NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">style</span><span class="t-type">VARCHAR NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">target_demographic</span><span class="t-type">VARCHAR</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">is_active</span><span class="t-type">BOOLEAN</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">rating_avg</span><span class="t-type">DECIMAL(3,2)</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">timestamps</span><span class="t-type">TIMESTAMP</span></li>
+    </ul>
+  </div>
+
+  <!-- ====== CARTS ====== -->
+  <div class="tbl" id="t-carts" style="left:620px; top:420px; width:220px;">
+    <div class="tbl-head h-carts">🛒 carts</div>
+    <ul>
+      <li><span class="badge b-pk">PK</span><span class="n-pk">id</span><span class="t-type">BIGINT AI</span></li>
+      <li id="fk-carts-user"><span class="badge b-fk">FK</span><span class="n-fk">user_id</span><span class="t-type">→ users</span></li>
+      <li id="fk-carts-product"><span class="badge b-fk">FK</span><span class="n-fk">product_id</span><span class="t-type">→ products</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">qty</span><span class="t-type">INT</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">timestamps</span><span class="t-type">TIMESTAMP</span></li>
+    </ul>
+  </div>
+
+  <!-- ====== ORDERS ====== -->
+  <div class="tbl" id="t-orders" style="left:1050px; top:470px; width:245px;">
+    <div class="tbl-head h-orders">📦 orders</div>
+    <ul>
+      <li><span class="badge b-pk">PK</span><span class="n-pk">id</span><span class="t-type">BIGINT AI</span></li>
+      <li id="fk-orders-buyer"><span class="badge b-fk">FK</span><span class="n-fk">buyer_id</span><span class="t-type">→ users</span></li>
+      <li id="fk-orders-seller"><span class="badge b-fk">FK</span><span class="n-fk">seller_id</span><span class="t-type">→ users</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">total_amount</span><span class="t-type">DECIMAL(15,2)</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">shipping_address</span><span class="t-type">TEXT</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">notes</span><span class="t-type">TEXT NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">status</span><span class="t-type">ENUM</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">timestamps</span><span class="t-type">TIMESTAMP</span></li>
+    </ul>
+  </div>
+
+  <!-- ====== ORDER ITEMS ====== -->
+  <div class="tbl" id="t-order_items" style="left:830px; top:830px; width:230px;">
+    <div class="tbl-head h-order_items">📋 order_items</div>
+    <ul>
+      <li><span class="badge b-pk">PK</span><span class="n-pk">id</span><span class="t-type">BIGINT AI</span></li>
+      <li id="fk-oi-order"><span class="badge b-fk">FK</span><span class="n-fk">order_id</span><span class="t-type">→ orders</span></li>
+      <li id="fk-oi-product"><span class="badge b-fk">FK</span><span class="n-fk">product_id</span><span class="t-type">→ products</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">qty</span><span class="t-type">INT</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">price</span><span class="t-type">DECIMAL(15,2)</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">timestamps</span><span class="t-type">TIMESTAMP</span></li>
+    </ul>
+  </div>
+
+  <!-- ====== PAYMENTS ====== -->
+  <div class="tbl" id="t-payments" style="left:1100px; top:830px; width:230px;">
+    <div class="tbl-head h-payments">💳 payments</div>
+    <ul>
+      <li><span class="badge b-pk">PK</span><span class="n-pk">id</span><span class="t-type">BIGINT AI</span></li>
+      <li id="fk-pay-order"><span class="badge b-fk">FK</span><span class="n-fk">order_id</span><span class="t-type">→ orders</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">amount</span><span class="t-type">DECIMAL(15,2)</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">method</span><span class="t-type">VARCHAR</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">proof_image</span><span class="t-type">LONGTEXT</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">status</span><span class="t-type">ENUM</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">confirmed_at</span><span class="t-type">TIMESTAMP NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">timestamps</span><span class="t-type">TIMESTAMP</span></li>
+    </ul>
+  </div>
+
+  <!-- ====== REVIEWS ====== -->
+  <div class="tbl" id="t-reviews" style="left:1370px; top:830px; width:230px;">
+    <div class="tbl-head h-reviews">⭐ reviews</div>
+    <ul>
+      <li><span class="badge b-pk">PK</span><span class="n-pk">id</span><span class="t-type">BIGINT AI</span></li>
+      <li id="fk-rev-user"><span class="badge b-fk">FK</span><span class="n-fk">user_id</span><span class="t-type">→ users</span></li>
+      <li id="fk-rev-product"><span class="badge b-fk">FK</span><span class="n-fk">product_id</span><span class="t-type">→ products</span></li>
+      <li id="fk-rev-order"><span class="badge b-fk">FK</span><span class="n-fk">order_id</span><span class="t-type">→ orders</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">rating</span><span class="t-type">TINYINT</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">comment</span><span class="t-type">TEXT NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">timestamps</span><span class="t-type">TIMESTAMP</span></li>
+    </ul>
+  </div>
+
+  <!-- ====== WISHLISTS ====== -->
+  <div class="tbl" id="t-wishlists" style="left:1550px; top:420px; width:220px;">
+    <div class="tbl-head h-wishlists">❤️ wishlists</div>
+    <ul>
+      <li><span class="badge b-pk">PK</span><span class="n-pk">id</span><span class="t-type">BIGINT AI</span></li>
+      <li id="fk-wl-user"><span class="badge b-fk">FK</span><span class="n-fk">user_id</span><span class="t-type">→ users</span></li>
+      <li id="fk-wl-product"><span class="badge b-fk">FK</span><span class="n-fk">product_id</span><span class="t-type">→ products</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">timestamps</span><span class="t-type">TIMESTAMP</span></li>
+    </ul>
+  </div>
+
+  <!-- ====== AI RECOMMENDATIONS ====== -->
+  <div class="tbl" id="t-ai" style="left:1950px; top:420px; width:240px;">
+    <div class="tbl-head h-ai">🤖 ai_recommendations</div>
+    <ul>
+      <li><span class="badge b-pk">PK</span><span class="n-pk">id</span><span class="t-type">BIGINT AI</span></li>
+      <li id="fk-ai-user"><span class="badge b-fk">FK</span><span class="n-fk">user_id</span><span class="t-type">→ users NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">input_data</span><span class="t-type">JSON</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">result_data</span><span class="t-type">JSON</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">timestamps</span><span class="t-type">TIMESTAMP</span></li>
+    </ul>
+  </div>
+
+  <!-- ====== CUSTOM PROPOSALS ====== -->
+  <div class="tbl" id="t-proposals" style="left:1640px; top:830px; width:265px;">
+    <div class="tbl-head h-proposals">📝 custom_proposals</div>
+    <ul>
+      <li><span class="badge b-pk">PK</span><span class="n-pk">id</span><span class="t-type">BIGINT AI</span></li>
+      <li id="fk-prop-buyer"><span class="badge b-fk">FK</span><span class="n-fk">buyer_id</span><span class="t-type">→ users</span></li>
+      <li id="fk-prop-seller"><span class="badge b-fk">FK</span><span class="n-fk">seller_id</span><span class="t-type">→ users</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">craft_type</span><span class="t-type">VARCHAR</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">material</span><span class="t-type">VARCHAR</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">budget</span><span class="t-type">DECIMAL(15,2)</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">deadline_days</span><span class="t-type">INT</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">description</span><span class="t-type">TEXT</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">difficulty</span><span class="t-type">VARCHAR</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">estimated_days</span><span class="t-type">INT</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">material_cost</span><span class="t-type">DECIMAL(15,2)</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">labor_cost</span><span class="t-type">DECIMAL(15,2)</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">shop_recommendation</span><span class="t-type">VARCHAR</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">agent_reasoning</span><span class="t-type">TEXT NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">status</span><span class="t-type">ENUM</span></li>
+      <li id="fk-prop-order"><span class="badge b-fk">FK</span><span class="n-fk">order_id</span><span class="t-type">→ orders NULL</span></li>
+      <li><span class="badge b-c">•</span><span class="n-c">timestamps</span><span class="t-type">TIMESTAMP</span></li>
+    </ul>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend-box">
+    <span><span class="badge b-pk" style="font-size:9px;">PK</span> Primary Key</span>
+    <span><span class="badge b-fk" style="font-size:9px;">FK</span> Foreign Key</span>
+    <span><span class="legend-line" style="background:#6366f1;"></span> Relasi ke users</span>
+    <span><span class="legend-line" style="background:#ef4444;"></span> Relasi ke products</span>
+    <span><span class="legend-line" style="background:#ec4899;"></span> Relasi ke orders</span>
+    <span><span class="legend-line" style="background:#f59e0b;"></span> Relasi ke shops</span>
+    <span><span class="legend-line" style="background:#10b981;"></span> Relasi ke categories</span>
+    <span>●─── 1 &nbsp;&nbsp; ●───< N &nbsp; (Crow's Foot)</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const svg = document.getElementById('svg-layer');
+  const canvas = document.getElementById('canvas');
+  svg.setAttribute('viewBox', `0 0 ${canvas.offsetWidth} ${canvas.offsetHeight}`);
+
+  // Relationship definitions: [fromTableId, toTableId, color, cardinalityLabel, side hints]
+  const relationships = [
+    // FK → PK connections
+    // To users (purple/indigo)
+    { from: 't-shops',     to: 't-users', color: '#6366f1', label: '1:1', fromSide: 'top',   toSide: 'left' },
+    { from: 't-carts',     to: 't-users', color: '#6366f1', label: 'N:1', fromSide: 'top',   toSide: 'bottom' },
+    { from: 't-orders',    to: 't-users', color: '#6366f1', label: 'N:1', fromSide: 'top',   toSide: 'bottom' },
+    { from: 't-wishlists', to: 't-users', color: '#6366f1', label: 'N:1', fromSide: 'top',   toSide: 'right' },
+    { from: 't-ai',        to: 't-users', color: '#6366f1', label: 'N:1', fromSide: 'top',   toSide: 'right' },
+    { from: 't-reviews',   to: 't-users', color: '#6366f1', label: 'N:1', fromSide: 'top',   toSide: 'right', viaY: 400 },
+    { from: 't-proposals', to: 't-users', color: '#6366f1', label: 'N:1', fromSide: 'top',   toSide: 'right', viaY: 380 },
+
+    // To shops (amber)
+    { from: 't-products',  to: 't-shops', color: '#f59e0b', label: 'N:1', fromSide: 'top', toSide: 'bottom' },
+
+    // To categories (green)
+    { from: 't-products',  to: 't-categories', color: '#10b981', label: 'N:1', fromSide: 'left', toSide: 'right' },
+
+    // To products (red)
+    { from: 't-carts',      to: 't-products', color: '#ef4444', label: 'N:1', fromSide: 'bottom', toSide: 'top', viaY: 790 },
+    { from: 't-order_items',to: 't-products', color: '#ef4444', label: 'N:1', fromSide: 'left',   toSide: 'right' },
+    { from: 't-wishlists',  to: 't-products', color: '#ef4444', label: 'N:1', fromSide: 'bottom', toSide: 'top', viaY: 790 },
+    { from: 't-reviews',    to: 't-products', color: '#ef4444', label: 'N:1', fromSide: 'left',   toSide: 'right', viaY: 1200 },
+
+    // To orders (pink)
+    { from: 't-order_items', to: 't-orders', color: '#ec4899', label: 'N:1', fromSide: 'top',  toSide: 'bottom' },
+    { from: 't-payments',    to: 't-orders', color: '#ec4899', label: '1:1', fromSide: 'top',  toSide: 'bottom' },
+    { from: 't-reviews',     to: 't-orders', color: '#ec4899', label: 'N:1', fromSide: 'top',  toSide: 'bottom', viaX: 1350 },
+    { from: 't-proposals',   to: 't-orders', color: '#ec4899', label: '1:1', fromSide: 'top',  toSide: 'bottom', viaX: 1310 },
+  ];
+
+  function getAnchor(el, side) {
+    const r = el.getBoundingClientRect();
+    const cr = canvas.getBoundingClientRect();
+    const x = r.left - cr.left;
+    const y = r.top - cr.top;
+    switch(side) {
+      case 'top':    return { x: x + r.width/2,  y: y };
+      case 'bottom': return { x: x + r.width/2,  y: y + r.height };
+      case 'left':   return { x: x,              y: y + r.height/2 };
+      case 'right':  return { x: x + r.width,    y: y + r.height/2 };
+    }
+  }
+
+  // Draw crow's foot marker
+  function crowFoot(x, y, dir, color) {
+    const size = 10;
+    let d = '';
+    if (dir === 'down') {
+      d = `M${x-size},${y+size} L${x},${y} L${x+size},${y+size}`;
+    } else if (dir === 'up') {
+      d = `M${x-size},${y-size} L${x},${y} L${x+size},${y-size}`;
+    } else if (dir === 'left') {
+      d = `M${x-size},${y-size} L${x},${y} L${x-size},${y+size}`;
+    } else if (dir === 'right') {
+      d = `M${x+size},${y-size} L${x},${y} L${x+size},${y+size}`;
+    }
+    return `<path d="${d}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>`;
+  }
+
+  // One marker at PK side
+  function oneMarker(x, y, dir, color) {
+    let d = '';
+    const s = 8;
+    if (dir === 'down') {
+      d = `M${x-s},${y} L${x+s},${y}`;
+    } else if (dir === 'up') {
+      d = `M${x-s},${y} L${x+s},${y}`;
+    } else if (dir === 'left') {
+      d = `M${x},${y-s} L${x},${y+s}`;
+    } else if (dir === 'right') {
+      d = `M${x},${y-s} L${x},${y+s}`;
+    }
+    return `<path d="${d}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>`;
+  }
+
+  let svgContent = '';
+  // Add arrowhead marker defs
+  svgContent += '<defs>';
+  svgContent += '</defs>';
+
+  relationships.forEach((rel, i) => {
+    const fromEl = document.getElementById(rel.from);
+    const toEl = document.getElementById(rel.to);
+    if (!fromEl || !toEl) return;
+
+    const from = getAnchor(fromEl, rel.fromSide);
+    const to = getAnchor(toEl, rel.toSide);
+
+    // Build path with smooth curves
+    let pathD = '';
+    const offset = 15 + (i * 3); // slight offset per line to avoid overlap
+
+    if (rel.fromSide === 'top' && rel.toSide === 'bottom') {
+      const midY = (from.y + to.y) / 2;
+      pathD = `M${from.x},${from.y} C${from.x},${midY} ${to.x},${midY} ${to.x},${to.y}`;
+    } else if (rel.fromSide === 'top' && rel.toSide === 'left') {
+      const midY = to.y + (from.y - to.y) / 2;
+      pathD = `M${from.x},${from.y} C${from.x},${midY} ${to.x - 40},${to.y} ${to.x},${to.y}`;
+    } else if (rel.fromSide === 'top' && rel.toSide === 'right') {
+      if (rel.viaY) {
+        const vx = rel.viaX || to.x + 60;
+        pathD = `M${from.x},${from.y} L${from.x},${rel.viaY} L${vx},${rel.viaY} L${vx},${to.y} L${to.x},${to.y}`;
+      } else {
+        const midY = to.y + (from.y - to.y) / 2;
+        pathD = `M${from.x},${from.y} C${from.x},${midY} ${to.x + 40},${to.y} ${to.x},${to.y}`;
+      }
+    } else if (rel.fromSide === 'bottom' && rel.toSide === 'top') {
+      if (rel.viaY) {
+        pathD = `M${from.x},${from.y} L${from.x},${rel.viaY} L${to.x},${rel.viaY} L${to.x},${to.y}`;
+      } else {
+        const midY = (from.y + to.y) / 2;
+        pathD = `M${from.x},${from.y} C${from.x},${midY} ${to.x},${midY} ${to.x},${to.y}`;
+      }
+    } else if (rel.fromSide === 'left' && rel.toSide === 'right') {
+      if (rel.viaY) {
+        pathD = `M${from.x},${from.y} L${from.x - 30},${from.y} L${from.x - 30},${rel.viaY} L${to.x + 30},${rel.viaY} L${to.x + 30},${to.y} L${to.x},${to.y}`;
+      } else {
+        const midX = (from.x + to.x) / 2;
+        pathD = `M${from.x},${from.y} C${midX},${from.y} ${midX},${to.y} ${to.x},${to.y}`;
+      }
+    } else {
+      // Generic
+      pathD = `M${from.x},${from.y} L${to.x},${to.y}`;
+    }
+
+    // Draw the line
+    svgContent += `<path d="${pathD}" fill="none" stroke="${rel.color}" stroke-width="2.5" stroke-opacity="0.7" stroke-linecap="round"/>`;
+
+    // Draw cardinality markers
+    // "N" side gets crow's foot at the FROM end, "1" side gets a line at the TO end
+    const isMany = rel.label.startsWith('N');
+
+    // Crow's foot at FROM (the FK/many side)
+    if (isMany) {
+      svgContent += crowFoot(from.x, from.y, rel.fromSide === 'top' ? 'down' : rel.fromSide === 'bottom' ? 'up' : rel.fromSide === 'left' ? 'right' : 'left', rel.color);
+    }
+
+    // "1" marker at TO (the PK side)
+    svgContent += oneMarker(to.x, to.y, rel.toSide, rel.color);
+
+    // Draw small cardinality label
+    const mx = (from.x + to.x) / 2;
+    const my = (from.y + to.y) / 2;
+    svgContent += `<rect x="${mx - 14}" y="${my - 8}" width="28" height="16" rx="4" fill="white" stroke="${rel.color}" stroke-width="1" opacity="0.9"/>`;
+    svgContent += `<text x="${mx}" y="${my + 4}" text-anchor="middle" font-size="9" font-weight="600" fill="${rel.color}" font-family="Inter,sans-serif">${rel.label}</text>`;
+  });
+
+  svg.innerHTML = svgContent;
+});
+</script>
+</body>
+</html>

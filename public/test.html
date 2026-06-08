@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tester Web Craftive API</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { color: #2563eb; text-align: center; }
+        .btn { padding: 10px 15px; background: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer; margin-right: 10px; }
+        .btn:hover { background: #1d4ed8; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .card { border: 1px solid #e5e7eb; padding: 15px; border-radius: 8px; background: #fff; }
+        .card img { width: 100%; height: 150px; object-fit: cover; border-radius: 5px; }
+        .card h3 { font-size: 16px; margin: 10px 0 5px; }
+        .price { color: #16a34a; font-weight: bold; }
+        pre { background: #1f2937; color: #10b981; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛠️ Tester Frontend Craftive API</h1>
+        <p>Halaman ini dibuat sebagai <b>Frontend sederhana</b> untuk membuktikan bahwa API Craftive milikmu sudah bisa dipanggil oleh aplikasi Web.</p>
+        
+        <div style="text-align: center; margin-bottom: 20px;">
+            <button class="btn" onclick="fetchProducts('semua')">Tampilkan Semua Produk</button>
+            <button class="btn" onclick="fetchProducts('murah')">Filter: Harga Murah</button>
+            <button class="btn" onclick="fetchProducts('tinggi')">Filter: Harga Tinggi</button>
+        </div>
+
+        <div id="loading" style="display: none; text-align: center;">Mengambil data dari API...</div>
+        
+        <h3>Tampilan Visual (Data dari API):</h3>
+        <div class="product-grid" id="productContainer">
+            <!-- Data produk akan muncul di sini -->
+        </div>
+
+        <h3>Response JSON Asli (Dari Postman/API):</h3>
+        <pre id="jsonResponse">// Data JSON akan muncul di sini</pre>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost/craftive/public/api';
+        const API_KEY = 'craftive-secret-key-2024'; // Sesuai dengan middleware kita
+
+        async function fetchProducts(filter) {
+            const container = document.getElementById('productContainer');
+            const jsonBox = document.getElementById('jsonResponse');
+            const loading = document.getElementById('loading');
+            
+            container.innerHTML = '';
+            jsonBox.innerText = '';
+            loading.style.display = 'block';
+
+            let endpoint = `${API_URL}/products`;
+            if(filter === 'murah') endpoint += '?price_range=murah';
+            if(filter === 'tinggi') endpoint += '?price_range=tinggi';
+
+            try {
+                // Fetch Data dari API kita
+                const response = await fetch(endpoint, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-API-KEY': API_KEY // Mengirim API KEY
+                    }
+                });
+
+                const json = await response.json();
+                loading.style.display = 'none';
+
+                // Tampilkan Response JSON mentah
+                jsonBox.innerText = JSON.stringify(json, null, 4);
+
+                // Buat Tampilan Visual UI
+                if(json.data && json.data.length > 0) {
+                    json.data.forEach(product => {
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = `
+                            <img src="${product.images && product.images[0] ? product.images[0] : 'https://via.placeholder.com/150'}" alt="${product.name}">
+                            <h3>${product.name}</h3>
+                            <div class="price">Rp ${product.price.toLocaleString('id-ID')}</div>
+                            <small>Kategori: ${product.category ? product.category.name : 'Umum'}</small>
+                        `;
+                        container.appendChild(card);
+                    });
+                } else {
+                    container.innerHTML = '<p>Tidak ada produk ditemukan.</p>';
+                }
+            } catch (error) {
+                loading.style.display = 'none';
+                jsonBox.innerText = "Error mengambil data. Pastikan XAMPP Apache dan MySQL menyala! Error: " + error;
+            }
+        }
+    </script>
+</body>
+</html>

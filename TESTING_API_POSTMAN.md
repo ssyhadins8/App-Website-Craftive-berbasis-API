@@ -1,6 +1,6 @@
 # 🧪 LAPORAN PENGUJIAN REST API CRAFTIVE DENGAN POSTMAN
 
-Laporan ini menyajikan hasil pengujian lengkap, mendalam, dan terstruktur dari seluruh endpoint REST API pada platform **Craftive** menggunakan **Postman Desktop Client**.
+Laporan ini menyajikan hasil pengujian lengkap, mendalam, dan terstruktur dari seluruh folder dan request pada Postman Collection untuk REST API pada platform **Craftive**.
 
 ---
 
@@ -16,7 +16,7 @@ Untuk mempermudah pengujian dinamis, Postman dikonfigurasi dengan variabel berik
 ## 🔒 2. Detail Pengujian Fitur Keamanan (Authentication & Authorization)
 
 ### A. Uji Proteksi API Key (`X-API-KEY`)
-Digunakan untuk melindungi endpoint publik dari bot scraping massal.
+Sistem melindungi data katalog publik dari scraping massal bot luar.
 
 *   **Metode**: `GET`
 *   **Endpoint**: `/api/catalog/products`
@@ -60,7 +60,7 @@ Digunakan untuk sinkronisasi cepat data profil eksternal tanpa token JWT.
 
 ---
 
-## 🛠️ 3. Pengujian Fitur CRUD & Otorisasi Peran (RBAC)
+## 🛠️ 3. Pengujian Fitur Alur Bisnis, CRUD, & RBAC (Role-Based Access Control)
 
 ### A. Tambah Produk Baru (CRUD Artisan/Seller)
 Sistem memastikan bahwa peran pembeli (`buyer`) diblokir jika mencoba menambah produk ke sanggar.
@@ -73,6 +73,43 @@ Sistem memastikan bahwa peran pembeli (`buyer`) diblokir jika mencoba menambah p
 
 ![Uji CRUD Admin](public/images/reports/postman_crud_test.png)
 *Gambar 4: Penolakan request CRUD (403 Forbidden) akibat perbedaan role*
+
+---
+
+### B. Simulasi Kriya Custom Planner (AI Agent Custom Planner)
+Menguji keandalan asisten negosiasi otomatis berbasis Agentic AI untuk menghitung rincian biaya.
+
+*   **Metode**: `POST`
+*   **Endpoint**: `/api/buyer/custom-planner`
+*   **Payload**: Rencana bahan, anggaran maksimal, dan estimasi waktu.
+*   **Response Sukses (`200 OK`)**: Mengembalikan estimasi tingkat kesulitan, biaya material, jasa, total harga referensi, dan reasoning penjelasan dari AI.
+
+![AI Agent Custom Planner](public/images/reports/postman_custom_planner.png)
+*Gambar 5: Response analisis kalkulasi biaya bahan dan jasa oleh Agentic AI*
+
+---
+
+### C. Proses Transaksi Checkout (Buyer Flow)
+Menguji pembentukan pesanan dari keranjang belanja yang aktif.
+
+*   **Metode**: `POST`
+*   **Endpoint**: `/api/buyer/checkout`
+*   **Response Sukses (`200 OK`)**: Membuat record order baru dengan status awal `pending` dan memotong stok produk secara otomatis.
+
+![Buyer Flow Checkout](public/images/reports/postman_buyer_checkout.png)
+*Gambar 6: Pembuatan transaksi pesanan baru dari keranjang belanja*
+
+---
+
+### D. Dasbor Monitoring & Statistik Ringkas (Admin Actions)
+Menguji pemantauan statistik utama platform oleh administrator.
+
+*   **Metode**: `GET`
+*   **Endpoint**: `/api/admin/dashboard`
+*   **Response Sukses (`200 OK`)**: Mengembalikan total pengguna aktif, jumlah toko terverifikasi, jumlah produk kriya, dan ringkasan omzet platform.
+
+![Admin Overview Dashboard](public/images/reports/postman_admin_dashboard.png)
+*Gambar 7: Penarikan data analitik dashboard oleh administrator*
 
 ---
 

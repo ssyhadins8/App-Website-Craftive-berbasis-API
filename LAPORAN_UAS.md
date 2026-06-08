@@ -129,22 +129,22 @@ The REST API security system on this platform is designed using a three-layer ar
 <span>4</span>
 </div>
 <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-left: 20px; margin-bottom: 8px;">
-<span>2.1. Deskripsi Platform & Arsitektur API</span>
+<span>2.1. Deskripsi Platform dan Arsitektur API</span>
 <span style="flex-grow: 1; border-bottom: 1px dotted #ccc; margin: 0 10px 4px 10px;"></span>
 <span>4</span>
 </div>
 <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-left: 20px; margin-bottom: 8px;">
-<span>2.2. Fitur-fitur Utama & Cara Kerja</span>
+<span>2.2. Daftar Fitur Utama dan Penjelasannya</span>
 <span style="flex-grow: 1; border-bottom: 1px dotted #ccc; margin: 0 10px 4px 10px;"></span>
 <span>6</span>
 </div>
 <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-left: 20px; margin-bottom: 8px;">
-<span>2.3. Keamanan & Autentikasi API</span>
+<span>2.3. Fitur Autentikasi dan Otorisasi (Keamanan API)</span>
 <span style="flex-grow: 1; border-bottom: 1px dotted #ccc; margin: 0 10px 4px 10px;"></span>
 <span>8</span>
 </div>
 <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-left: 20px; margin-bottom: 8px;">
-<span>2.4. CRUD Endpoints Platform</span>
+<span>2.4. Fitur CRUD untuk masing-masing Entitas Utama</span>
 <span style="flex-grow: 1; border-bottom: 1px dotted #ccc; margin: 0 10px 4px 10px;"></span>
 <span>11</span>
 </div>
@@ -154,12 +154,12 @@ The REST API security system on this platform is designed using a three-layer ar
 <span>12</span>
 </div>
 <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-left: 20px; margin-bottom: 8px;">
-<span>2.6. User Interface & Alur Navigasi</span>
+<span>2.6. User Interface (UI)</span>
 <span style="flex-grow: 1; border-bottom: 1px dotted #ccc; margin: 0 10px 4px 10px;"></span>
 <span>14</span>
 </div>
 <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-left: 20px; margin-bottom: 8px;">
-<span>2.7. Pengujian API dengan Postman</span>
+<span>2.7. Testing API menggunakan Postman</span>
 <span style="flex-grow: 1; border-bottom: 1px dotted #ccc; margin: 0 10px 4px 10px;"></span>
 <span>17</span>
 </div>

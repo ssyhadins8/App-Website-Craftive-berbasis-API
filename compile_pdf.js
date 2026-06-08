@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { marked } from 'marked';
-import { exec } from 'child_process';
+import puppeteer from 'puppeteer-core';
 
 // Get the root directory
 const rootDir = 'C:/xampp1/htdocs/craftive';
@@ -321,16 +321,35 @@ const finalHtml = htmlTemplate.replace('{{CONTENT}}', html);
 fs.writeFileSync(htmlPath, finalHtml, 'utf8');
 console.log('HTML compiled successfully to:', htmlPath);
 
-// Execute Edge Headless PDF print
-const edgeCmd = `& "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe" --headless --disable-gpu --print-to-pdf-no-header --print-to-pdf="${pdfPath}" "${htmlPath}"`;
-
-console.log('Executing Edge headless PDF export...');
-exec(edgeCmd, { shell: 'powershell.exe' }, (err, stdout, stderr) => {
-    if (err) {
-        console.error('Error during PDF compilation:', err);
-        return;
-    }
+// Execute Puppeteer Headless PDF print
+console.log('Executing Puppeteer PDF export...');
+const edgePath = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
+let browser;
+try {
+    browser = await puppeteer.launch({
+        executablePath: edgePath,
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+    const page = await browser.newPage();
+    const htmlFileUrl = 'file:///' + htmlPath.replace(/\\/g, '/');
+    await page.goto(htmlFileUrl, { waitUntil: 'networkidle0' });
+    await page.pdf({
+        path: pdfPath,
+        format: 'A4',
+        printBackground: true,
+        margin: {
+            top: '0px',
+            bottom: '0px',
+            left: '0px',
+            right: '0px'
+        }
+    });
     console.log('PDF printed successfully to:', pdfPath);
-    console.log('STDOUT:', stdout);
-    console.log('STDERR:', stderr);
-});
+} catch (err) {
+    console.error('Error during PDF compilation:', err);
+} finally {
+    if (browser) {
+        await browser.close();
+    }
+}

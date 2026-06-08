@@ -12,7 +12,7 @@ Platform ini dilengkapi dengan fitur unggulan **Agentic AI Custom Planner** yang
 
 ---
 
-## 🎓 Informasi Akademik
+## Informasi Akademik
 *   **Mata Kuliah:** Pemrograman API
 *   **Program Studi:** D4 Manajemen Informatika, Jurusan Teknik Informatika
 *   **Fakultas:** Vokasi, Universitas Negeri Surabaya (UNESA)
@@ -22,7 +22,7 @@ Platform ini dilengkapi dengan fitur unggulan **Agentic AI Custom Planner** yang
 
 ---
 
-## ✨ Fitur-Fitur Utama Platform
+## Fitur-Fitur Utama Platform
 
 1.  **Katalog Produk Kriya:** Menampilkan produk kerajinan tangan lokal yang terbagi berdasarkan kategori material, asal sanggar, tingkat rating ulasan, dan gaya desain (estetika).
 2.  **Sistem Keranjang & Checkout (Multi-Seller Cart Routing):** Mendukung pembelian produk kriya dari berbagai sanggar perajin sekaligus dalam satu transaksi, dengan sistem pemotongan stok aman.
@@ -32,7 +32,7 @@ Platform ini dilengkapi dengan fitur unggulan **Agentic AI Custom Planner** yang
 
 ---
 
-## 🔒 Arsitektur Keamanan & Otorisasi API
+## Arsitektur Keamanan & Otorisasi API
 
 Sistem REST API dirancang kokoh menggunakan perlindungan keamanan tiga lapis:
 1.  **API Key Statis (`X-API-KEY`):** Melindungi katalog umum (`GET /api/catalog/products`) dari aktivitas scraping data massal oleh bot luar.
@@ -42,7 +42,7 @@ Sistem REST API dirancang kokoh menggunakan perlindungan keamanan tiga lapis:
 
 ---
 
-## 🛠️ Panduan Instalasi & Setup Proyek
+## Panduan Instalasi & Setup Proyek
 
 Ikuti langkah-langkah di bawah ini untuk menjalankan proyek di lingkungan lokal (XAMPP):
 
@@ -86,7 +86,7 @@ API sekarang berjalan dan dapat diakses pada alamat: **`http://127.0.0.1:8000/ap
 
 ---
 
-## 🌐 Dokumentasi API Interaktif (Swagger UI)
+## Dokumentasi API Interaktif (Swagger UI)
 
 Proyek ini telah dilengkapi dengan dokumentasi interaktif **Swagger UI** (OpenAPI Specification 3.0) untuk memudahkan eksplorasi dan pengujian live endpoint tanpa perlu membuka Postman.
 
@@ -98,7 +98,7 @@ Kamu dapat melakukan otorisasi menggunakan tombol **Authorize** di halaman terse
 
 ---
 
-## 📬 Pengujian API dengan Postman
+## Pengujian API dengan Postman
 
 Berkas koleksi Postman sudah tersedia di dalam repositori ini:
 *   **File Koleksi:** `Craftive_API_Postman_Collection.json` (berada di root folder proyek).
@@ -106,7 +106,7 @@ Berkas koleksi Postman sudah tersedia di dalam repositori ini:
 
 ---
 
-## 📄 Berkas Laporan & Panduan Ujian
+## Berkas Laporan & Panduan Ujian
 Seluruh laporan tugas akhir dan cheat sheet ujian telah dicetak ke berkas PDF berikut:
-*   📘 **Laporan Tugas Akhir UAS:** [LAPORAN_UAS.pdf](LAPORAN_UAS.pdf)
-*   🎓 **Panduan Uji & Q&A Demo API:** [PANDUAN_DEMO_API.pdf](PANDUAN_DEMO_API.pdf)
+*   **Laporan Tugas Akhir UAS:** [LAPORAN_UAS.pdf](LAPORAN_UAS.pdf)
+*   **Panduan Uji & Q&A Demo API:** [PANDUAN_DEMO_API.pdf](PANDUAN_DEMO_API.pdf)
